@@ -1,0 +1,319 @@
+<mat-horizontal-stepper labelPosition="bottom" #stepper>
+    <mat-step>
+        <ng-template matStepLabel>{{title1}}</ng-template>
+        <h2>{{title1}}</h2>
+        <mat-form-field>
+    <!--<mat-label>Nombre del Médico de Seguimiento</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="Nombre del Médico de Seguimiento" required>
+</mat-form-field>
+<mat-form-field>
+    <!--<mat-label>Día de seguimiento</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="Día de seguimiento" type="number" required>
+</mat-form-field>
+<mat-form-field>
+    <!--<mat-label>Coloque el número de Historia Clínica que Corresponde a esta persona y haga conocer este número para que el paciente acceda al cuestionario de seguimiento utilizando ese mismo número</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="Coloque el número de Historia Clínica que Corresponde a esta persona y haga conocer este número para que el paciente acceda al cuestionario de seguimiento utilizando ese mismo número" required>
+</mat-form-field>
+<mat-form-field>
+    <!--<mat-label>Nombres del Paciente</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="Nombres del Paciente" required>
+</mat-form-field>
+<mat-list>
+    <mat-list-item>
+        <mat-label>Estado actual de Paciente</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="Estado actual de Paciente">
+            <mat-radio-button *ngFor="let item of lista6" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-form-field>
+    <!--<mat-label>Estado actual de Paciente (otro)</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="Estado actual de Paciente (otro)" required>
+</mat-form-field>
+
+        <div>
+            <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+        </div>
+    </mat-step>
+
+    <mat-step>
+    <ng-template matStepLabel>{{title2}}</ng-template>
+    <h2>{{title2}}</h2>
+    <mat-list>
+    <mat-list-item>
+        <mat-label>Aún cuenta con alguien</mat-label>
+    </mat-list-item>
+    <mat-list-item *ngFor="let item of lista8">
+        <mat-checkbox [(ngModel)]="formDto.prueba" name="prueba" [value]="item">{{item}}</mat-checkbox>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-form-field>
+    <!--<mat-label>Aún cuenta con alguien (Otro)</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="Aún cuenta con alguien (Otro)" required>
+</mat-form-field>
+
+    <div>
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+    </div>
+</mat-step><mat-step>
+    <ng-template matStepLabel>{{title3}}</ng-template>
+    <h2>{{title3}}</h2>
+    <mat-list>
+    <mat-list-item>
+        <mat-label>¿Como describe su estado de salud el día de hoy con relacion al dia de ayer? (de menor a mayor)</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Como describe su estado de salud el día de hoy con relacion al dia de ayer? (de menor a mayor)">
+            <mat-radio-button *ngFor="let item of lista10" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Tiene Dolor en la garganta?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Tiene Dolor en la garganta?">
+            <mat-radio-button *ngFor="let item of lista11" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Cuanto es su dolor de garganta?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Cuanto es su dolor de garganta?">
+            <mat-radio-button *ngFor="let item of lista12" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Tiene dolor de cabeza?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Tiene dolor de cabeza?">
+            <mat-radio-button *ngFor="let item of lista13" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Cuanto dolor de Cabeza?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Cuanto dolor de Cabeza?">
+            <mat-radio-button *ngFor="let item of lista14" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+
+    <div>
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+    </div>
+</mat-step><mat-step>
+    <ng-template matStepLabel>{{title4}}</ng-template>
+    <h2>{{title4}}</h2>
+    <mat-list>
+    <mat-list-item>
+        <mat-label>¿Tiene tos?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Tiene tos?">
+            <mat-radio-button *ngFor="let item of lista15" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Tiene fiebre?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Tiene fiebre?">
+            <mat-radio-button *ngFor="let item of lista16" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Cuánto es su tempertura hoy?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Cuánto es su tempertura hoy?">
+            <mat-radio-button *ngFor="let item of lista17" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Tiene dificultad para respirar?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Tiene dificultad para respirar?">
+            <mat-radio-button *ngFor="let item of lista18" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Tiene dificultad para terminar las frases u oraciones cuando habla debido al cansancio?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Tiene dificultad para terminar las frases u oraciones cuando habla debido al cansancio?">
+            <mat-radio-button *ngFor="let item of lista19" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Siente cansancio estando en reposo?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Siente cansancio estando en reposo?">
+            <mat-radio-button *ngFor="let item of lista20" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+
+    <div>
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+    </div>
+</mat-step><mat-step>
+    <ng-template matStepLabel>{{title5}}</ng-template>
+    <h2>{{title5}}</h2>
+    <mat-list>
+    <mat-list-item>
+        <mat-label>¿Mando a alguna persona a que recoja su tratamiento?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Mando a alguna persona a que recoja su tratamiento?">
+            <mat-radio-button *ngFor="let item of lista21" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-form-field>
+    <!--<mat-label>Comentarios</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="Comentarios" required>
+</mat-form-field>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Está tomando su medicación como se le indico?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Está tomando su medicación como se le indico?">
+            <mat-radio-button *ngFor="let item of lista23" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-form-field>
+    <!--<mat-label>¿Por qué no ha tomado su medicación?</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="¿Por qué no ha tomado su medicación?" required>
+</mat-form-field>
+
+    <div>
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+    </div>
+</mat-step><mat-step>
+    <ng-template matStepLabel>{{title6}}</ng-template>
+    <h2>{{title6}}</h2>
+    <mat-list>
+    <mat-list-item>
+        <mat-label>¿En caso de emergencia, le gustaría recibir suero hiperinmune de pacientes Infectados por Covid-19 que han superado la enfermedad y ahora son NEGATIVOS ?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿En caso de emergencia, le gustaría recibir suero hiperinmune de pacientes Infectados por Covid-19 que han superado la enfermedad y ahora son NEGATIVOS ?">
+            <mat-radio-button *ngFor="let item of lista25" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+<mat-list>
+    <mat-list-item>
+        <mat-label>¿Le gustaria voluntariamente donar su sangre una vez haya superado la enfermedad, para que lo utilizen otros pacientes en caso de emergencia?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Le gustaria voluntariamente donar su sangre una vez haya superado la enfermedad, para que lo utilizen otros pacientes en caso de emergencia?">
+            <mat-radio-button *ngFor="let item of lista26" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+
+    <div>
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+    </div>
+</mat-step><mat-step>
+    <ng-template matStepLabel>{{title7}}</ng-template>
+    <h2>{{title7}}</h2>
+    <mat-form-field>
+    <!--<mat-label>¿Hay algo que desee comentarnos?</mat-label>-->
+    <input [(ngModel)]="formDto.prueba" name="prueba" matInput placeholder="¿Hay algo que desee comentarnos?" required>
+</mat-form-field>
+
+    <div>
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+    </div>
+</mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>{{title8}}</ng-template>
+        <h2>{{title8}}</h2>
+        <mat-list>
+    <mat-list-item>
+        <mat-label>¿Paciente dado de Alta?</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="¿Paciente dado de Alta?">
+            <mat-radio-button *ngFor="let item of lista28" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>
+
+        <div>
+            <button mat-button matStepperPrevious>Atras</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

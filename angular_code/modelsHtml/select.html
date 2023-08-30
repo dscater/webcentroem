@@ -1,0 +1,7 @@
+<mat-form-field>
+    <mat-label>NameLabel</mat-label>
+    <mat-select [(ngModel)]="formDto.prueba" name="prueba" required>
+        <mat-option>Options</mat-option>
+        <mat-option *ngFor="let item of list" [value]="item">{{item}}</mat-option>
+    </mat-select>
+</mat-form-field>

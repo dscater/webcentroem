@@ -1,0 +1,9 @@
+<mat-list>
+    <mat-list-item>
+        <mat-label>NameLabel</mat-label>
+    </mat-list-item>
+    <mat-list-item *ngFor="let item of listaNumber">
+        <mat-checkbox [(ngModel)]="formDto.prueba" name="prueba" [value]="item">{{item}}</mat-checkbox>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>

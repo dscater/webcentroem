@@ -1,0 +1,12 @@
+<mat-list>
+    <mat-list-item>
+        <mat-label>NameLabel</mat-label>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+    <mat-list-item>
+        <mat-radio-group [(ngModel)]="formDto.prueba" name="prueba" class="vertical-radio-group" aria-label="NameLabel">
+            <mat-radio-button *ngFor="let item of listaNumber" [value]="item" required>{{item}}</mat-radio-button>
+        </mat-radio-group>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+</mat-list>

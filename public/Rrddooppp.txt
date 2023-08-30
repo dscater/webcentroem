@@ -1,0 +1,2 @@
+1|101|Entidades financieras del Estado o con participación mayoritaria del Estado|Banco de Desarrollo Productivo
+2|102|Entidades financieras del Estado o con participación mayoritaria del Estado|Banco Público

@@ -1,0 +1,22 @@
+<mat-horizontal-stepper labelPosition="bottom" #stepper>
+    <mat-step>
+        <ng-template matStepLabel>{{title1}}</ng-template>
+        <h2>{{title1}}</h2>
+        #CONTENIDO_1
+        <div>
+            <button mat-button class="btn btn-success" matStepperNext>Siguiente</button>
+        </div>
+    </mat-step>
+
+    #CONTENIDO_BODY
+
+    <mat-step>
+        <ng-template matStepLabel>{{title8}}</ng-template>
+        <h2>{{title8}}</h2>
+        #CONTENIDO_LAST
+        <div>
+            <button mat-button matStepperPrevious>Atras</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

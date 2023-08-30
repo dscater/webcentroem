@@ -1,0 +1,78 @@
+body {
+    background-color: #fff;
+}
+
+.hb-custom-header #mk-page-introduce,
+.mk-header {
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+}
+
+.hb-custom-header>div,
+.mk-header-bg {
+    background-color: #f7f7f7;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: scroll;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+}
+
+.mk-classic-nav-bg {
+    background-color: #f7f7f7;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: scroll;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+}
+
+.master-holder-bg {
+    background-color: #fff;
+}
+
+#mk-footer {
+    background-color: #f7f7f7;
+}
+
+#mk-boxed-layout {
+    -webkit-box-shadow: 0 0 px rgba(0, 0, 0, );
+    -moz-box-shadow: 0 0 px rgba(0, 0, 0, );
+    box-shadow: 0 0 px rgba(0, 0, 0, );
+}
+
+.mk-news-tab .mk-tabs-tabs .is-active a,
+.mk-fancy-title.pattern-style span,
+.mk-fancy-title.pattern-style.color-gradient span:after,
+.page-bg-color {
+    background-color: #fff;
+}
+
+.page-title {
+    font-size: 20px;
+    color: #4d4d4d;
+    text-transform: uppercase;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    line-height: 100%;
+    color: #a3a3a3;
+    font-size: 14px;
+    text-transform: none;
+}
+
+.header-style-1 .mk-header-padding-wrapper,
+.header-style-2 .mk-header-padding-wrapper,
+.header-style-3 .mk-header-padding-wrapper {
+    padding-top: 156px;
+}
+
+body {
+    font-family: Rubik
+}
