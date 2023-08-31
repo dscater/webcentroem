@@ -21,40 +21,93 @@ class DoctorHorario extends Model
             ->join("users", "users.id", "=", "doctor_horarios.user_id")
             ->join("persona", "persona.id_user", "=", "users.id")
             ->where("id_especialidad", $especialidad_id)
+            ->where("estado", "ACTIVO")
             ->where("dia_num", $dia_num)->get();
 
         $horarios = [];
         foreach ($doctor_horarios as $doctor_horario) {
             $nuevo_horario = [];
+            $inicio_maniana = date("H:i", strtotime($doctor_horario->tm_hora_ini));
+            $fin_maniana = date("H:i", strtotime($doctor_horario->tm_hora_fin));
+            $inicio_tarde = date("H:i", strtotime($doctor_horario->tt_hora_ini));
+            $fin_tarde = date("H:i", strtotime($doctor_horario->tt_hora_fin));
+
+            // horario doctor
             $nuevo_horario = [
-                "maniana" => [
-                    "doctor_id" => $doctor_horario->user_id,
-                    "hora" => $doctor_horario->tm_hora_ini,
-                    "label" => "De " . date("H:i", strtotime($doctor_horario->tm_hora_ini)) . ' a ' . date("H:i", strtotime($doctor_horario->tm_hora_fin)) . " - Dr(a). " . $doctor_horario->nombre . ' ' . $doctor_horario->paterno . ' ' . $doctor_horario->materno,
-                    "estado" => "DISPONIBLE",
-                    "value" => $doctor_horario->user_id . '-' . $doctor_horario->tm_hora_ini
-                ],
-                "tarde" => [
-                    "doctor_id" => $doctor_horario->user_id,
-                    "hora" => $doctor_horario->tt_hora_ini,
-                    "label" => "De " . date("H:i", strtotime($doctor_horario->tt_hora_ini)) . ' a ' . date("H:i", strtotime($doctor_horario->tt_hora_fin)) . " - Dr(a). " . $doctor_horario->nombre . ' ' . $doctor_horario->paterno . ' ' . $doctor_horario->materno,
-                    "estado" => "DISPONIBLE",
-                    "value" => $doctor_horario->user_id . '-' . $doctor_horario->tt_hora_ini
-                ],
+                "nom_doctor" => "Dr(a). " . $doctor_horario->nombre . ' ' . $doctor_horario->paterno . ' ' . $doctor_horario->materno,
+                "maniana" => [],
+                "tarde" => [],
             ];
 
-            // validar estado
-            $existe_cita = CitaMedica::where("fecha_cita", $fecha)->where("hora", $nuevo_horario["maniana"]["hora"])->get()->first();
-            if ($existe_cita) {
-                $nuevo_horario["maniana"]["estado"] = "OCUPADO";
+            // horarios doctor
+            // turno maniana
+            if ($inicio_maniana != '00:00' && $fin_maniana != '00:00') {
+                $horario_generado = self::generarHorarios($inicio_maniana, $fin_maniana, 15, $doctor_horario->user_id, $fecha);
+                $nuevo_horario["maniana"] = $horario_generado;
             }
-
-            $existe_cita = CitaMedica::where("fecha_cita", $fecha)->where("hora", $nuevo_horario["tarde"]["hora"])->get()->first();
-            if ($existe_cita) {
-                $nuevo_horario["tarde"]["estado"] = "OCUPADO";
+            // turno tarde
+            if ($inicio_tarde != '00:00' && $fin_tarde != '00:00') {
+                $horario_generado = self::generarHorarios($inicio_tarde, $fin_tarde, 15, $doctor_horario->user_id, $fecha);
+                $nuevo_horario["tarde"] = $horario_generado;
             }
-
             $horarios[] = $nuevo_horario;
+        }
+
+        return $horarios;
+    }
+
+    static function generarHorarios($intervaloInicio, $intervaloFin, $paso, $id_doctor, $fecha)
+    {
+        $horarios = [];
+        list($inicioHora, $inicioMinuto) = explode(':', $intervaloInicio);
+        list($finHora, $finMinuto) = explode(':', $intervaloFin);
+        $pasoMinutos = (int)$paso;
+
+        $horaActual = (int)$inicioHora;
+        $minutoActual = (int)$inicioMinuto;
+        $nueva_hora = sprintf('%02d:%02d', $horaActual, $minutoActual);
+        $estado = "DISPONIBLE";
+        // validar estado
+        $id_paciente = 0;
+        $existe_cita = CitaMedica::where("fecha_cita", $fecha)
+            ->where("hora", $nueva_hora)
+            ->where("id_doctor", $id_doctor)
+            ->get()->first();
+        if ($existe_cita) {
+            $estado = "OCUPADO";
+            $id_paciente = $existe_cita->id_paciente;
+        }
+
+        $horarios[] = [
+            "value" => $id_doctor . '-' . $nueva_hora,
+            "hora" => $nueva_hora,
+            "estado" => $estado,
+            "id_paciente" => $id_paciente
+        ];
+        while ($horaActual < $finHora || ($horaActual === $finHora && $minutoActual <= $finMinuto)) {
+            $minutoActual += $pasoMinutos;
+            if ($minutoActual >= 60) {
+                $minutoActual -= 60;
+                $horaActual += 1;
+            }
+            $nueva_hora = sprintf('%02d:%02d', $horaActual, $minutoActual);
+            $estado = "DISPONIBLE";
+            // validar estado
+            $existe_cita = CitaMedica::where("fecha_cita", $fecha)
+                ->where("hora", $nueva_hora)
+                ->where("id_doctor", $id_doctor)
+                ->get()->first();
+            if ($existe_cita) {
+                $estado = "OCUPADO";
+                $id_paciente = $existe_cita->id_paciente;
+            }
+
+            $horarios[] = [
+                "value" => $id_doctor . '-' . $nueva_hora,
+                "hora" => $nueva_hora,
+                "estado" => $estado,
+                "id_paciente" => $id_paciente
+            ];
         }
 
         return $horarios;

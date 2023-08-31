@@ -218,6 +218,7 @@ $config = Configuracion::find(1);
 			}
 		</style>
 	</noscript>
+	@yield("css")
 </head>
 
 <body

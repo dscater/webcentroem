@@ -22,61 +22,50 @@ class BotTelegram extends Model
 
     public static function responder()
     {
-        $resp = null;
-        $botToken = self::token();
-        $url = "https://api.telegram.org/bot$botToken/getUpdates";
-        // Realizar la solicitud GET
-        $response = file_get_contents($url);
-        $resultados =  json_decode($response, true);; //Obtenemos los resultados del BOT /getUpdate
-        // recorremos los resultados
-        foreach ($resultados["result"] as $value) {
-            /*
-                1) Comprobar que no se este revisando una actualizacion de mensajes anterior
-                2) Verificar el mensaje si es un comando
-                */
-            $existe = TelegramUpdate::where('update_id', $value['update_id'])->get()->first();
-            if (!$existe) {
-                $texto = "";
-                $chatId = 0;
-                $firstName = "";
-                $lastName = "";
-                $nombreCompleto = $firstName . ' ' . $lastName;
-                $tipo = 'mensaje';
-                // validar si existe el indice 'entities' en el mensaje recibido del telegram
-                if (isset($value['message'])) {
-                    // validar que el type sea 'command'
-                    $texto = $value['message']['text'];
-                    $chatId = $value['message']['chat']['id'];
-                    $firstName = $value['message']['chat']['first_name'];
-                    $lastName = '';
-                    if (isset($value['message']['chat']['last_name'])) {
-                        $lastName = $value['message']['chat']['last_name'] ? $value['message']['chat']['last_name'] : '';
-                    }
-                    if (isset($value['message']['entities'])) {
-                        if ($value['message']['entities'][0]['type'] == 'bot_command') {
-                            $tipo = 'comando';
-                        }
-                    }
-                } elseif ($value['callback_query']) {
-                    $tipo = 'callback';
-                    $texto = $value['callback_query']["data"];
-                    $chatId = $value['callback_query']['from']['id'];
-                    $firstName = $value['callback_query']['from']['first_name'];
-                    $lastName = '';
-                    if (isset($value['callback_query']['from']['last_name'])) {
-                        $lastName = $value['callback_query']['from']['last_name'] ? $value['callback_query']['from']['last_name'] : '';
+        try {
+            $request = file_get_contents("php://input");
+            $request = json_decode($request);
+            // \Log::debug('Texto::' . serialize($request) . ' OBJETO EN STRING NORMALIN NORMALIN');
+            if (isset($request->message)) {
+                \Log::debug('Texto::' . $request->message->chat->id . ' CHAT ID');
+            } elseif ($request->callback_query) {
+                \Log::debug('Texto::' . $request->callback_query->from->id . ' CHAT ID - CALLBACKQUERY');
+            }
+            $texto = "";
+            $chatId = 0;
+            $firstName = "";
+            $lastName = "";
+            $nombreCompleto = $firstName . ' ' . $lastName;
+            $tipo = 'mensaje';
+            // validar si existe el indice 'entities' en el mensaje recibido del telegram
+            if (isset($request->message)) {
+                // validar que el type sea 'command'
+                $texto = $request->message->text;
+                $chatId = $request->message->chat->id;
+                $firstName = $request->message->chat->first_name;
+                $lastName = '';
+                if (isset($request->message->chat->last_name)) {
+                    $lastName = $request->message->chat->last_name ? $request->message->chat->last_name : '';
+                }
+                if (isset($request->message->entities)) {
+                    if ($request->message->entities[0]->type == 'bot_command') {
+                        $tipo = 'comando';
                     }
                 }
-                $nombreCompleto = $firstName . ' ' . $lastName;
-                $resp = self::enviar($chatId, $texto, $tipo, $nombreCompleto);
-
-                if ($resp['ok']) {
-                    TelegramUpdate::create([
-                        'update_id' => $value['update_id']
-                    ]);
-                    self::confirmaMensajes(($value['update_id'] + 1));
+            } elseif ($request->callback_query) {
+                $tipo = 'callback';
+                $texto = $request->callback_query->data;
+                $chatId = $request->callback_query->from->id;
+                $firstName = $request->callback_query->from->first_name;
+                $lastName = '';
+                if (isset($request->callback_query->from->last_name)) {
+                    $lastName = $request->callback_query->from->last_name ? $request->callback_query->from->last_name : '';
                 }
             }
+            $resp = self::enviar($chatId, $texto, $tipo, $nombreCompleto);
+            return 1;
+        } catch (\Exception $e) {
+            \Log::debug('Error bot:' . $e->getMessage());
         }
     }
 

@@ -70,7 +70,7 @@
                 
                 <div class="panel-body">
                     
-                    <form action="{{url('reporte-historial-clinico')}}" method="get" target="blank" accept-charset="utf-8" id="formulario-create" >
+                    <form action="{{url('reporte-historial-clinico')}}" method="get" target="_blank" accept-charset="utf-8" id="formulario-create" >
                         <div class="row">
                             <div class="col-md-9 text-center" style="">
                                 <h2 style="margin-bottom:0">REPORTE HISTORIA CLÍNICA</h2>

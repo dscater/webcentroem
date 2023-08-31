@@ -189,7 +189,7 @@
                 $("#alert-fecha").css("display", "block")
             }
 
-            <?php $hora = !empty(old('hora')) ? old('hora') : $cita_medica->id_doctor . '-' . $cita_medica->hora; ?>
+            <?php $hora = !empty(old('hora')) ? old('hora') : $cita_medica->id_doctor . '-' . date('H:i', strtotime($cita_medica->hora)); ?>
             var hora = '{{ $hora }}';
             $.ajax({
                 type: "get",
@@ -198,43 +198,42 @@
                 url: "{{ url('') }}/cita-medica-get-hora-por-fecha/" + fecha + "/" + id_especialidad,
 
                 success: function(data) {
-                    console.log(data.horas)
+                    // console.log(data.horas)
                     var disabled = "";
                     var disponible = "";
                     var selected = "";
-                    // data.horas.forEach(function(element, index) {
-                    //     disabled = (element.estado_hora == 'ocupado') ? 'disabled' : '';
-                    //     disponible = (element.estado_hora == 'ocupado') ? 'OCUPADO' : 'DISPONIBLE';
-                    //     if (hora == element.hora) {
-                    //         $("#hora").append('<option value="' + element.hora + '" selected>' + element
-                    //             .hora + ' ' + disponible + '</option>');
-                    //     } else {
-                    //         $("#hora").append('<option value="' + element.hora + '" ' + disabled + '>' +
-                    //             element.hora + ' ' + disponible + '</option>');
-                    //     }
-
-                    // })
-
                     data.horas.forEach(function(element, index) {
-                        disabled = (element.maniana.estado == 'OCUPADO') ? 'disabled' : '';
-                        disponible = (element.maniana.estado == 'OCUPADO') ? 'OCUPADO' : 'DISPONIBLE';
-                        selected = "";
-                        if (hora == element.maniana.value) {
-                            selected = " selected";
-                        }
-                        $("#hora").append('<option value="' + element.maniana.value + '" ' + disabled +
-                            selected + '>' +
-                            element.maniana.label + ' (' + element.maniana.estado + ')</option>');
+                        element.maniana.forEach(function(e_m, i_m) {
+                            disabled = (e_m.estado == 'OCUPADO') && $("#id_persona").val() !=
+                                e_m.id_paciente ? 'disabled' : '';
+                            disponible = (e_m.estado == 'OCUPADO') ? 'OCUPADO' :
+                                'DISPONIBLE';
+                            selected = "";
+                            if (hora == e_m.value) {
+                                selected = " selected";
+                            }
+                            $("#hora").append('<option value="' + e_m.value + '" ' +
+                                disabled +
+                                selected + '>' +
+                                e_m.hora + ' | ' + element.nom_doctor + ' (' + e_m.estado +
+                                ')</option>');
+                        });
 
-                        disabled = (element.tarde.estado == 'OCUPADO') ? 'disabled' : '';
-                        disponible = (element.tarde.estado == 'OCUPADO') ? 'OCUPADO' : 'DISPONIBLE';
-                        selected = "";
-                        if (hora == element.tarde.value) {
-                            selected = " selected";
-                        }
-                        $("#hora").append('<option value="' + element.tarde.value + '" ' + disabled +
-                            selected + '>' +
-                            element.tarde.label + ' (' + element.tarde.estado + ')</option>');
+                        element.tarde.forEach(function(e_t, i_m) {
+                            disabled = (e_t.estado == 'OCUPADO') && $("#id_persona").val() !=
+                                e_t.id_paciente ? 'disabled' : '';
+                            disponible = (e_t.estado == 'OCUPADO') ? 'OCUPADO' :
+                                'DISPONIBLE';
+                            selected = "";
+                            if (hora == e_t.value) {
+                                selected = " selected";
+                            }
+                            $("#hora").append('<option value="' + e_t.value + '" ' +
+                                disabled +
+                                selected + '>' +
+                                e_t.hora + ' | ' + element.nom_doctor + ' (' + e_t.estado +
+                                ')</option>');
+                        });
                     })
 
                     $("#hora").trigger("chosen:updated")

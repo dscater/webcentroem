@@ -26,7 +26,7 @@ use App\Http\Controllers\Reportes\ReporteCantidadVentas;
 use App\Http\Controllers\Reportes\ReporteCantidadSolicitudesPedido;
 use App\Http\Controllers\Reportes\reporteCitaMedica;
 use App\Http\Controllers\Reportes\ReporteFacturas;
-
+use Illuminate\Support\Facades\Auth;
 use Storage;
 
 class ReporteController extends Controller
@@ -279,15 +279,23 @@ class ReporteController extends Controller
         $where .= ($desde == "") ? "" : " and '$desde'<=p.updated_at ";
         $where .= ($hasta == "") ? "" : " and '$hasta 23:59:59'>=p.updated_at ";
 
+        $user = Auth::user();
+        if ($user->hasRole('doctor')) {
+            $resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
+            from persona p
+            join especialidad e on p.id_especialidad= e.id
+            where 1=1 and p.state=1 and e.state=1 and p.id_role=4 and p.id_especialidad=" . $user->persona->id_especialidad . " " . $where . "
+            group by e.id, e.especialidad
+            order by e.especialidad");
+        } else {
+            $resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
+            from persona p
+            join especialidad e on p.id_especialidad= e.id
+            where 1=1 and p.state=1 and e.state=1 and p.id_role=4 $where
+            group by e.id, e.especialidad
+            order by e.especialidad");
+        }
 
-
-
-        $resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
-                                        from persona p
-                                        join especialidad e on p.id_especialidad= e.id
-                                        where 1=1 and p.state=1 and e.state=1 $where
-                                        group by e.id, e.especialidad
-                                        order by e.especialidad");
         return view("reportes.reporte-html-cantidad-paciente")
             ->with("resultado", $resultado);
     }
@@ -306,12 +314,25 @@ class ReporteController extends Controller
 
 
         $data = (object) array();
-        $data->resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
-                                        from persona p
-                                        join especialidad e on p.id_especialidad= e.id
-                                        where 1=1 and p.state=1 and e.state=1 $where
-                                        group by e.id, e.especialidad
-                                        order by e.especialidad");
+
+        $user = Auth::user();
+        if ($user->hasRole('doctor')) {
+            $data->resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
+            from persona p
+            join especialidad e on p.id_especialidad= e.id
+            where 1=1 and p.state=1 and e.state=1 and p.id_role=4 and p.id_especialidad=" . $user->persona->id_especialidad . " " . $where . "
+            group by e.id, e.especialidad
+            order by e.especialidad");
+        } else {
+            $data->resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
+            from persona p
+            join especialidad e on p.id_especialidad= e.id
+            where 1=1 and p.state=1 and e.state=1 and p.id_role=4 $where
+            group by e.id, e.especialidad
+            order by e.especialidad");
+        }
+
+
 
         $data->tipo = "I";
 

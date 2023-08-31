@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\BotTelegram;
 use App\DoctorHorario;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +15,9 @@ use App\Helpers\FuncionesComunes;
 use App\Models\Usuario;
 use App\Models\Persona;
 use App\Models\CitaMedica;
+use App\PersonaTelegram;
 use App\Recordatorio;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Session;
 
@@ -136,8 +139,6 @@ class CitaMedicaController extends Controller
                 ->withInput();
         }
 
-
-
         if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("administrador") || auth()->user()->hasRole("secretaria")) {
             $id_paciente = $request->id_persona;
         } else {
@@ -175,6 +176,25 @@ class CitaMedicaController extends Controller
 
         $s->save();
 
+        $fecha_hoy = date("Y-m-d");
+        $maniana = date("Y-m-d", strtotime($fecha_hoy . '+1 days'));
+        if ($s->fecha_cita == $maniana) {
+            $persona_telegrams = PersonaTelegram::where("persona_id", $id_paciente)->get();
+            foreach ($persona_telegrams as $pt) {
+                $mensaje = "Hola " . $pt->persona->nombre . ($pt->persona->paterno && $pt->persona->paterno != '' && $pt->persona->paterno != null ? ' ' . $pt->persona->paterno : '') . ($pt->persona->materno && $pt->persona->materno != '' && $pt->persona->materno != null ? ' ' . $pt->persona->materno : '' . ".");
+                $mensaje .= "\nTe envío este mensaje para recordarte que el día de mañana tienes una cita médica:";
+                $especialidad = DB::select("SELECT * FROM especialidad WHERE id = $s->id_especialidad")[0];
+                $mensaje .= "\n<b>Especialidad:</b> " . $especialidad->especialidad;
+                $mensaje .= "\n<b>Fecha:</b> " . date("d/m/Y", strtotime($s->fecha_cita));
+                $mensaje .= "\n<b>Hora:</b> " . date("H:i a", strtotime($s->hora));
+                $datos = array(
+                    'chat_id' => $pt->chat_id,
+                    'text' => $mensaje,
+                    'parse_mode' => 'HTML'
+                );
+                BotTelegram::send("sendMessage", $datos);
+            }
+        }
 
         \Session::flash('mensaje', 'Se registro correctamente.');
         \Session::flash('class-alert', 'success');
@@ -227,8 +247,6 @@ class CitaMedicaController extends Controller
         if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("paciente")) {
             $validacion["id_especialidad"] = "required";
         }
-
-
 
         $validator = \Validator::make($request->all(), $validacion);
 

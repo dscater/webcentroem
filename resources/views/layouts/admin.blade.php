@@ -14,7 +14,7 @@ else{
 
 <head>
 	<meta charset="utf-8" />
-	<title>WEBCENTROEM</title>
+	<title>MEDICOR</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -42,7 +42,7 @@ else{
 	<!-- ================== END BASE JS ================== -->
 	<style>
 		body{
-			background: url(<?php echo url('');?>/img/img-login2.jpg) top 0 center no-repeat;
+            background: url(<?php echo url('');?>/img/fondo.jpeg) top 0 center no-repeat;
 			background-attachment: fixed;
 			background-size: 100% 100%;
 		}
@@ -65,7 +65,7 @@ else{
 			<div class="container-fluid">
 				<!-- begin mobile sidebar expand / collapse button -->
 				<div class="navbar-header">
-					<a href="javascript::" class="navbar-brand" data-click="sidebar-minify"><span class="navbar-logo"></span> <span style="font-size:15px;color:#fff">WEBCENTROEM</span></a>
+					<a href="javascript::" class="navbar-brand" data-click="sidebar-minify"><span class="navbar-logo"></span> <span style="font-size:15px;color:#fff">MEDICOR</span></a>
 					<button type="button" class="navbar-toggle" data-click="sidebar-toggled">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -269,7 +269,7 @@ else{
 					<li id="menu-cita-medico-form-buscar"><a href="{{url('/cita-medica-form-buscar')}}">Cita Médica</a></li>
 					<li id="menu-cita-medico-nuevo"><a href="{{url('/cita-medica-nuevo')}}">Nueva Cita Médica</a></li>
 					@if(Auth::user()->roles->first()->name == 'DOCTOR')
-					<li id="menu-cita-medico-nuevo"><a href="{{route('doctor_horarios.show',Auth::user()->id)}}">Horarios</a></li>
+					<li id="menu-cita-medico-nuevo"><a href="{{route('doctor_horarios.show',Auth::user()->id)}}">Gestionar Horarios</a></li>
 					@endif
 					<!-- begin sidebar minify button -->
 					<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>

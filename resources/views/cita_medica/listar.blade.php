@@ -17,7 +17,7 @@ use App\Helpers\FuncionesComunes;
         color:white;
     }
     .pendiente{
-        background: rgb(172, 172, 0)!important;
+        background: rgb(253, 245, 0)!important;
         color:black;
     }
 </style>
@@ -117,6 +117,7 @@ use App\Helpers\FuncionesComunes;
                                 @if(!auth()->user()->hasRole("paciente"))
                                 <button class="btn btn-xs btn-danger" onclick="clickEliminar({{$value->id}})" title="" ><span class="fa fa-trash"></span> Eliminar</Button>
                                 @endif
+                                <a class="btn btn-xs btn-info" href="{{url('/factura-nuevo')}}?nrop={{$value->id_paciente}}" title=""><span class="fa fa-money"></span> Nuevo Pago</a>
                             </td>
                         </tr>
                         @endforeach

@@ -80,7 +80,7 @@
 
                     <div class="panel-body">
 
-                        <form action="{{ url('reporte-factura') }}" method="get" target="blank" accept-charset="utf-8"
+                        <form action="{{ url('reporte-factura') }}" method="get" target="_blank" accept-charset="utf-8"
                             id="formulario-create">
                             <div class="row">
                                 <div class="col-md-9 text-center" style="">

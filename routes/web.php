@@ -257,7 +257,9 @@ Route::get("test-exp-numeros", function () {
 });
 
 // BOT TELEGRAM
-Route::get("/bot_telegram", "BotTelegramController@index");
+Route::post("/bot_telegram", "BotTelegramController@index");
+Route::post("/prueba", "BotTelegramController@prueba");
+Route::get("/bot_telegram", "BotTelegramController@prueba");
 
 
 Route::get("/", "WebController@index");

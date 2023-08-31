@@ -204,23 +204,58 @@
                 url: "{{ url('') }}/cita-medica-get-hora-por-fecha/" + fecha + "/" + id_especialidad,
 
                 success: function(data) {
-                    console.log(data.horas)
+                    // console.log(data.horas)
                     var disabled = "";
                     var disponible = "";
                     data.horas.forEach(function(element, index) {
-                        disabled = (element.maniana.estado == 'OCUPADO') ? 'disabled' : '';
-                        disponible = (element.maniana.estado == 'OCUPADO') ? 'OCUPADO' : 'DISPONIBLE';
-                        $("#hora").append('<option value="' + element.maniana.value + '" ' + disabled + '>' +
-                            element.maniana.label +' ('+ element.maniana.estado+ ')</option>');
+                        element.maniana.forEach(function(e_m, i_m) {
+                            disabled = (e_m.estado == 'OCUPADO') ? 'disabled' : '';
+                            disponible = (e_m.estado == 'OCUPADO') ? 'OCUPADO' :
+                                'DISPONIBLE';
+                            $("#hora").append('<option value="' + e_m.value + '" ' +
+                                disabled +
+                                '>' +
+                                e_m.hora + ' | ' + element.nom_doctor + ' (' + e_m.estado +
+                                ')</option>');
+                        });
 
-                        disabled = (element.tarde.estado == 'OCUPADO') ? 'disabled' : '';
-                        disponible = (element.tarde.estado == 'OCUPADO') ? 'OCUPADO' : 'DISPONIBLE';
-                        $("#hora").append('<option value="' + element.tarde.value + '" ' + disabled + '>' +
-                            element.tarde.label +' ('+ element.tarde.estado+ ')</option>');
+                        element.tarde.forEach(function(e_t, i_m) {
+                            disabled = (e_t.estado == 'OCUPADO') ? 'disabled' : '';
+                            disponible = (e_t.estado == 'OCUPADO') ? 'OCUPADO' :
+                                'DISPONIBLE';
+                            $("#hora").append('<option value="' + e_t.value + '" ' +
+                                disabled +
+                                '>' +
+                                e_t.hora + ' | ' + element.nom_doctor + ' (' + e_t.estado +
+                                ')</option>');
+                        });
                     })
                     $("#hora").trigger("chosen:updated")
                 }
             });
+        }
+
+        function generarHorarios(intervaloInicio, intervaloFin, paso) {
+            const horarios = [];
+            if (intervaloInicio != '00:00' && intervaloFin != '00:00') {
+                const [inicioHora, inicioMinuto] = intervaloInicio.split(':').map(Number);
+                const [finHora, finMinuto] = intervaloFin.split(':').map(Number);
+                const pasoMinutos = parseInt(paso, 10);
+
+                let horaActual = inicioHora;
+                let minutoActual = inicioMinuto;
+
+                while (horaActual < finHora || (horaActual === finHora && minutoActual <= finMinuto)) {
+                    horarios.push(`${horaActual.toString().padStart(2, '0')}:${minutoActual.toString().padStart(2, '0')}`);
+
+                    minutoActual += pasoMinutos;
+                    if (minutoActual >= 60) {
+                        minutoActual -= 60;
+                        horaActual += 1;
+                    }
+                }
+            }
+            return horarios;
         }
     </script>
 @endsection

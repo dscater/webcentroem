@@ -1,0 +1,3 @@
+https://api.telegram.org/bot6234491750:AAEGwmrchL48dbHv6ieEYNZR7sJI8ED5R4A/setwebhook?url=
+
+ https://a726-2800-cd0-2f1b-c300-507b-81df-690f-fb3d.ngrok-free.app/webcentroem/public/bot_telegram

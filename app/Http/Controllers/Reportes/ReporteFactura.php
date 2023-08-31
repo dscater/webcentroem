@@ -44,18 +44,20 @@ class ReporteFactura extends \FPDF
 
         $this->Ln(2);
 
-        $this->SetFont("Arial", "", 9);
-        $this->Cell(67, 4, utf8_decode("NIT: " . $this->configuracion->nit), 0, 1, "C");
-        $this->Cell(67, 4, utf8_decode("No FACTURA: " . FuncionesComunes::serearNumero(5, $this->factura->nro_factura)), 0, 1, "C");
-        $this->Cell(67, 4, utf8_decode("No AUTORIZACIÓN: " . $this->factura->numero_autorizacion), 0, 1, "C");
+        if ($this->factura->tipo_paciente == 'PACIENTE PARTICULAR') {
+            $this->SetFont("Arial", "", 9);
+            $this->Cell(67, 4, utf8_decode("NIT: " . $this->configuracion->nit), 0, 1, "C");
+            $this->Cell(67, 4, utf8_decode("No FACTURA: " . FuncionesComunes::serearNumero(5, $this->factura->nro_factura)), 0, 1, "C");
+            $this->Cell(67, 4, utf8_decode("No AUTORIZACIÓN: " . $this->factura->numero_autorizacion), 0, 1, "C");
 
-        $this->Ln(2);
-
-        for ($i = $this->GetX(); $i < 72; $i = $i + 1.7) {
-            $this->Line($i, $this->GetY(), $i + 1, $this->GetY());
+            $this->Ln(2);
+            for ($i = $this->GetX(); $i < 72; $i = $i + 1.7) {
+                $this->Line($i, $this->GetY(), $i + 1, $this->GetY());
+            }
+            $this->Ln(2);
         }
 
-        $this->Ln(2);
+
 
         $this->MultiCell(67, 4, utf8_decode($this->configuracion->actividad_economica), 0, 'C');
 
@@ -63,6 +65,9 @@ class ReporteFactura extends \FPDF
         $this->Cell(27, 4, utf8_decode("Hora: " . date("H:i", strtotime($this->factura->created_at))), 0, 1, "R");
         $this->Cell(67, 4, utf8_decode("NIT/CI: " . $this->factura->paciente_ci), 0, 1, "L");
         $this->Cell(67, 4, utf8_decode("Señor(es): " . $this->factura->paciente_nombre), 0, 1, "L");
+        if ($this->factura->tipo_paciente == 'PACIENTE ASEGURADO') {
+            $this->Cell(67, 4, utf8_decode("Institución: " . $this->factura->institucion), 0, 1, "L");
+        }
 
         $this->Ln(2);
         for ($i = $this->GetX(); $i < 72; $i = $i + 1.7) {
@@ -123,19 +128,18 @@ class ReporteFactura extends \FPDF
             $this->Line($i, $this->GetY(), $i + 1, $this->GetY());
         }
 
-        $this->Ln(2);
-
-
-
-        $qr = "1548642781_7554593.png";
-
-        $this->Ln(2);
-        $this->Cell(67, 4, utf8_decode("CODIGO DE CONTROL: " . $this->factura->codigo_control), 0, 1, "L");
-        $this->Cell(67, 4, utf8_decode("FECHA LIMITE EMISIÓN: " . date("d/m/Y", strtotime($this->factura->fecha_limite_emision))), 0, 1, "L");
-        $this->Image(storage_path("app/public/qrcodes/" . $qr), (77 - 25) / 2, $this->GetY() + 5, 25, 25);
-        $this->Ln(35);
+        if ($this->factura->tipo_paciente == 'PACIENTE PARTICULAR') {
+            $this->Ln(2);
+            $qr = "1548642781_7554593.png";
+            $this->Ln(2);
+            $this->Cell(67, 4, utf8_decode("CODIGO DE CONTROL: " . $this->factura->codigo_control), 0, 1, "L");
+            $this->Cell(67, 4, utf8_decode("FECHA LIMITE EMISIÓN: " . date("d/m/Y", strtotime($this->factura->fecha_limite_emision))), 0, 1, "L");
+            $this->Image(storage_path("app/public/qrcodes/" . $qr), (77 - 25) / 2, $this->GetY() + 5, 25, 25);
+            $this->Ln(35);
+        } else {
+            $this->Ln(2);
+        }
         $this->MultiCell(67, 4, utf8_decode($this->configuracion->leyenda_factura), 0, "C");
-
 
         //$nombre= time()."_factura_".$resultado->id.'.pdf';
         $nombre = time() . "_factura_" . '.pdf';

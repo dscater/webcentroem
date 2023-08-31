@@ -91,11 +91,11 @@ use App\Helpers\FuncionesComunes;
                             <td >{{date("d-m-Y H:i", strtotime($value->updated_at))}}</td>
                             <td class="td-acciones">
                                 <a class="btn btn-xs btn-inverse" href="{{url('factura-ver/'.$value->id)}}" target="blank"><span class="fa fa-eye"></span> Ver</a>
-                                <a class="btn btn-xs btn-info" href="{{url('factura-modificar/'.$value->id)}}" title="" target="blank"><span class="fa fa-pencil-square-o"></span> Editar</a>
-                                <a class="btn btn-xs btn-info" href="{{url('factura-reporte/'.$value->id)}}" title="" target="blank"><span class="fa fa-print"></span> PDF</a>
+                                {{-- <a class="btn btn-xs btn-info" href="{{url('factura-modificar/'.$value->id)}}" title="" target="blank"><span class="fa fa-pencil-square-o"></span> Editar</a> --}}
+                                <a class="btn btn-xs btn-info" href="{{url('factura-reporte/'.$value->id)}}" title="" target="_blank"><span class="fa fa-print"></span> PDF</a>
                                 
                                 @if(auth()->user()->hasRole("administrador"))
-                                <button class="btn btn-xs btn-danger" onclick="clickEliminar({{$value->id}})" title="" ><span class="fa fa-trash"></span> Eliminar</Button>
+                                <button class="btn btn-xs btn-danger" onclick="clickEliminar({{$value->id}})" title="" ><span class="fa fa-trash"></span> Anulación</Button>
                                 @endif
                             </td>
                         </tr>
@@ -144,7 +144,7 @@ use App\Helpers\FuncionesComunes;
             <h4 class="modal-title" id="myModalLabel" style="color:#FFF">Alerta confirmar</h4>
         </div>
         <div class="modal-body">
-            ¿Esta seguro de eliminar el registro?
+            ¿Esta seguro de anular el registro?
             <input type="hidden" id="borrar-id">
         </div>
         <div class="modal-footer">

@@ -54,8 +54,8 @@
                                 <div class="col-md-12">
                                     <h5>DATOS</h5>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group col-md-12">
+                                <div class="col-md-12">
+                                    <div class="form-group col-md-6">
                                         <label class="app-label fecha_factura"><span>*</span> Tipo de paciente:</label>
                                         <div class="div-create-tipo_paciente">
                                             <select name="tipo_paciente" id="tipo_paciente" class="form-control">
@@ -65,13 +65,19 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group col-md-6 institucion">
+                                        <label class="app-label fecha_factura"><span>*</span> Institución:</label>
+                                        <div class="div-create-tipo_paciente">
+                                            <input name="institucion" id="institucion" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="col-12">
 
                                     <!-- begin col-2 -->
                                     <div class="form-group col-md-4">
-                                        <label class="app-label fecha_factura"><span>*</span> Fecha de la Factura:</label>
+                                        <label class="app-label fecha_factura"><span>*</span> Fecha de Pago:</label>
                                         <div class="div-create-fecha_factura">
                                             <input name="fecha_factura" value="{{ date('Y-m-d') }}"
                                                 class="app-form-control form-control  fadeInLeft animated"
@@ -82,14 +88,20 @@
                                             @endif
                                         </div>
                                     </div>
-
+                                    @php
+                                        $paciente = null;
+                                        if (isset($_GET['nrop']) && $_GET['nrop']) {
+                                            $paciente = App\Models\Persona::find($_GET['nrop']);
+                                        }
+                                    @endphp
                                     <!-- begin col-2 -->
                                     <div class="form-group col-md-4">
                                         <label class="app-label paciente_ci"><span>*</span> CI/NIT:</label>
                                         <div class="div-create-paciente_ci">
-                                            <input name="paciente_ci" value="{{ old('paciente_ci') }}"
+                                            <input name="paciente_ci"
                                                 class="app-form-control form-control  fadeInLeft animated"
-                                                id="input-paciente_ci" type="number" required>
+                                                id="input-paciente_ci" type="number"
+                                                value="{{ $paciente ? $paciente->ci : old('paciente_ci') }}" required>
                                             @if ($errors->has('paciente_ci'))
                                                 <div class="app-alert alert alert-danger">
                                                     {{ $errors->first('paciente_ci') }}</div>
@@ -100,9 +112,11 @@
                                     <div class="form-group col-md-8">
                                         <label class="app-label paciente_nombre"><span>*</span> A nombre de:</label>
                                         <div class="div-create-paciente_nombre">
-                                            <input name="paciente_nombre" value="{{ old('paciente_nombre') }}"
+                                            <input name="paciente_nombre"
                                                 class="app-form-control form-control  fadeInLeft animated"
-                                                id="input-paciente_nombre" type="text" required>
+                                                id="input-paciente_nombre"
+                                                value="{{ $paciente ? $paciente->paterno . ' ' . $paciente->materno . ' ' . $paciente->nombre : old('paciente_nombre') }}"
+                                                type="text" required>
                                             @if ($errors->has('paciente_nombre'))
                                                 <div class="app-alert alert alert-danger">
                                                     {{ $errors->first('paciente_nombre') }}</div>
@@ -114,8 +128,8 @@
                                         <label class="app-label monto"><span>*</span> Monto:</label>
                                         <div class="div-create-monto">
                                             <input name="monto" value="{{ old('monto') }}"
-                                                class="app-form-control form-control  fadeInLeft animated" id="input-monto"
-                                                type="text" required>
+                                                class="app-form-control form-control  fadeInLeft animated"
+                                                id="input-monto" type="text" required>
                                             @if ($errors->has('monto'))
                                                 <div class="app-alert alert alert-danger">{{ $errors->first('monto') }}
                                                 </div>
@@ -150,9 +164,22 @@
 
 @section('script_3')
     <script>
+        let tipo_paciente = $("#tipo_paciente");
+        let institucion = $("#institucion");
         $('document').ready(function() {
+            institucion.parents(".institucion").hide();
             $("#menu-administracion-factura").addClass("active");
             $("#menu-factura-nuevo").addClass("active");
+            tipo_paciente.change(function() {
+                let tipo = $(this).val();
+                if (tipo == "PACIENTE ASEGURADO") {
+                    institucion.prop("required", true);
+                    institucion.parents(".institucion").show();
+                } else {
+                    institucion.removeProp("required");
+                    institucion.parents(".institucion").hide();
+                }
+            });
         });
     </script>
 @endsection

@@ -16,6 +16,7 @@ class Recordatorio extends Model
 
     public static function enviaRecordatorios()
     {
+        Log::debug("enviara");
         $hoy = date("Y-m-d");
         $existe = Recordatorio::where("fecha", $hoy)->get()->first();
         if (!$existe) {

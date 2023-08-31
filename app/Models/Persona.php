@@ -3,26 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Persona extends Model
 {
     protected $table = "persona";
 
-    public static function personaByCarnet($numero_documento){
+    protected $appends = ["especialidad"];
+
+    public static function personaByCarnet($numero_documento)
+    {
         return \DB::select("SELECT p.*, d.abrev1 expedido
             from persona p
             inner join departamento d on p.id_departamento=d.id
             where numero_documento='{$numero_documento}'");
     }
-    public static function personaByLikeCarnet($numero_documento){
+    public static function personaByLikeCarnet($numero_documento)
+    {
         return \DB::select("SELECT p.*, d.abrev1 expedido
             from persona p
             inner join departamento d on p.id_departamento=d.id
             where numero_documento like '%{$numero_documento}%'");
     }
-    
 
-    public static function personaCompletoById($id){
+
+    public static function personaCompletoById($id)
+    {
         return \DB::select("SELECT p.*,
                     tdi.tipo tipo_doc_iden,
                     d.abrev1 expedido,
@@ -46,12 +52,18 @@ class Persona extends Model
                     where p.id=$id")[0];
     }
 
-    public static function getIdPersonaByIdUsuario($id_usuario){
+    public static function getIdPersonaByIdUsuario($id_usuario)
+    {
         $r = \DB::select("SELECT id from persona where id_user=$id_usuario");
-        if(!empty($r)){
+        if (!empty($r)) {
             return $r[0]->id;
         }
         return null;
     }
-    
+
+
+    public function getEspecialidadAttribute()
+    {
+        return DB::select("SELECT especialidad FROM especialidad WHERE id = " . $this->id_especialidad)[0]->especialidad;
+    }
 }
