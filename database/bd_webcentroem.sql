@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 31-08-2023 a las 20:08:55
+-- Tiempo de generación: 06-10-2023 a las 16:28:03
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -29,28 +29,13 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `bot_telegrams` (
   `id` bigint UNSIGNED NOT NULL,
-  `chat_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `comando` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `chat_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comando` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `valor` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `estado` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `bot_telegrams`
---
-
-INSERT INTO `bot_telegrams` (`id`, `chat_id`, `comando`, `valor`, `estado`, `created_at`, `updated_at`) VALUES
-(1, '5627243465', '/start', NULL, 'ENVIADO', '2023-08-31 19:50:50', '2023-08-31 19:50:50'),
-(2, '5627243465', '/ci', NULL, 'CANCELADO', '2023-08-31 19:50:50', '2023-08-31 19:50:51'),
-(3, '5627243465', '/start', NULL, 'ENVIADO', '2023-08-31 19:50:51', '2023-08-31 19:50:51'),
-(4, '5627243465', '/ci', NULL, 'CANCELADO', '2023-08-31 19:50:51', '2023-08-31 19:50:52'),
-(5, '5627243465', '/startt', NULL, 'CANCELADO', '2023-08-31 19:50:52', '2023-08-31 19:50:53'),
-(6, '5627243465', '/start', NULL, 'ENVIADO', '2023-08-31 19:50:53', '2023-08-31 19:50:53'),
-(7, '5627243465', '/ci', NULL, 'CANCELADO', '2023-08-31 19:50:53', '2023-08-31 19:50:55'),
-(8, '5627243465', '/start', NULL, 'ENVIADO', '2023-08-31 19:50:55', '2023-08-31 19:50:55'),
-(9, '5627243465', '/ci', '78945612', 'ENVIADO', '2023-08-31 19:50:55', '2023-08-31 19:51:30');
 
 -- --------------------------------------------------------
 
@@ -79,9 +64,10 @@ CREATE TABLE `cita_medica` (
 INSERT INTO `cita_medica` (`id`, `id_paciente`, `id_especialidad`, `id_doctor`, `fecha_cita`, `hora`, `estado`, `state`, `created_at`, `updated_at`, `email_enviado`) VALUES
 (1, 28, 2, 16, '2023-05-24', '08:00:00', 'NO ATENDIDO', 1, '2023-05-22 20:34:51', '2023-08-31 10:53:15', 1),
 (2, 42, 2, 16, '2023-05-24', '14:00:00', 'NO ATENDIDO', 1, '2023-05-23 11:42:50', '2023-08-31 10:59:21', 1),
-(3, 29, 2, 16, '2023-09-01', '08:15:00', 'PENDIENTE', 1, '2023-08-31 12:41:32', '2023-08-31 12:50:47', 1),
-(4, 30, 2, 16, '2023-09-01', '09:00:00', 'PENDIENTE', 1, '2023-08-31 12:51:17', '2023-08-31 12:51:17', 1),
-(5, 28, 1, 9, '2023-09-01', '08:00:00', 'PENDIENTE', 1, '2023-08-31 13:23:28', '2023-08-31 13:23:28', 1);
+(3, 29, 2, 16, '2023-09-01', '08:15:00', 'NO ATENDIDO', 1, '2023-08-31 12:41:32', '2023-10-06 10:05:24', 1),
+(4, 30, 2, 16, '2023-09-01', '09:00:00', 'NO ATENDIDO', 1, '2023-08-31 12:51:17', '2023-10-06 10:05:24', 1),
+(5, 28, 1, 9, '2023-09-01', '08:00:00', 'NO ATENDIDO', 1, '2023-08-31 13:23:28', '2023-10-06 10:05:24', 1),
+(6, 34, 1, 9, '2023-09-01', '08:15:00', 'NO ATENDIDO', 1, '2023-08-31 17:18:49', '2023-10-06 10:05:24', 0);
 
 -- --------------------------------------------------------
 
@@ -147,7 +133,7 @@ CREATE TABLE `configuracion` (
 --
 
 INSERT INTO `configuracion` (`id`, `razon_social`, `alias`, `ciudad`, `direccion`, `nit`, `numero_autorizacion`, `fecha_limite_emision`, `telefono`, `celular`, `casilla`, `email`, `web`, `logo`, `actividad_economica`, `leyenda_factura`, `cretated_at`, `updated_at`) VALUES
-(1, 'CLINICA DEL SUR', 'CLINICA DEL NORTE', 'SUCRE', 'Calle Rosendo Villa #14, Ciudad de Sucre. Bolivia.', '8574123', '7845126', '2022-04-23', '46457977', '74174112', '-', 'clinica@vida.net', 'http://clinica.com', '1625936558_mision.jpg', 'SALVAR VIDAS', 'NUESTRO COMPROMISO ESTA CON LA SOCIEDAD', NULL, '2021-08-22 23:38:34');
+(1, 'CLINICA DEL SUR', 'CLINICA DEL NORTE', 'SUCRE', 'Calle Rosendo Villa #14, Ciudad de Sucre. Bolivia.', '8574123', '7845126', '2022-04-23', '46457977', '74174112', '-', 'clinica@vida.net', 'http://clinica.com', '1696605647_photo_2023-10-06_09-28-33.jpg', 'SALVAR VIDAS', 'NUESTRO COMPROMISO ESTA CON LA SOCIEDAD', NULL, '2023-10-06 15:20:47');
 
 -- --------------------------------------------------------
 
@@ -158,9 +144,9 @@ INSERT INTO `configuracion` (`id`, `razon_social`, `alias`, `ciudad`, `direccion
 CREATE TABLE `doctor_horarios` (
   `id` bigint UNSIGNED NOT NULL,
   `user_id` bigint UNSIGNED NOT NULL,
-  `dia` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dia_num` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `estado` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dia` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dia_num` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tm_hora_ini` time NOT NULL,
   `tm_hora_fin` time NOT NULL,
   `tt_hora_ini` time NOT NULL,
@@ -178,12 +164,17 @@ INSERT INTO `doctor_horarios` (`id`, `user_id`, `dia`, `dia_num`, `estado`, `tm_
 (2, 16, 'MARTES', '2', 'ACTIVO', '08:00:00', '13:00:00', '14:00:00', '17:00:00', '2023-05-19 20:04:31', '2023-05-19 20:46:17'),
 (3, 16, 'MIERCOLES', '3', 'ACTIVO', '08:00:00', '13:00:00', '14:00:00', '17:00:00', '2023-05-19 20:04:31', '2023-05-19 20:49:25'),
 (4, 16, 'JUEVES', '4', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-05-19 20:04:31', '2023-08-31 16:41:16'),
-(5, 16, 'VIERNES', '5', 'INACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-05-19 20:04:31', '2023-05-19 20:46:25'),
+(5, 16, 'VIERNES', '5', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-05-19 20:04:31', '2023-10-06 14:59:03'),
 (6, 9, 'LUNES', '1', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-08-31 17:22:51', '2023-08-31 17:22:51'),
 (7, 9, 'MARTES', '2', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-08-31 17:22:51', '2023-08-31 17:22:51'),
 (8, 9, 'MIERCOLES', '3', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-08-31 17:22:51', '2023-08-31 17:22:51'),
 (9, 9, 'JUEVES', '4', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-08-31 17:22:51', '2023-08-31 17:22:51'),
-(10, 9, 'VIERNES', '5', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-08-31 17:22:51', '2023-08-31 17:22:51');
+(10, 9, 'VIERNES', '5', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-08-31 17:22:51', '2023-08-31 17:22:51'),
+(11, 10, 'LUNES', '1', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-10-06 15:09:24', '2023-10-06 15:09:24'),
+(12, 10, 'MARTES', '2', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-10-06 15:09:24', '2023-10-06 15:09:24'),
+(13, 10, 'MIERCOLES', '3', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-10-06 15:09:24', '2023-10-06 15:09:24'),
+(14, 10, 'JUEVES', '4', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-10-06 15:09:24', '2023-10-06 15:09:24'),
+(15, 10, 'VIERNES', '5', 'ACTIVO', '08:00:00', '12:00:00', '14:00:00', '18:00:00', '2023-10-06 15:09:24', '2023-10-06 15:09:24');
 
 -- --------------------------------------------------------
 
@@ -324,6 +315,29 @@ INSERT INTO `horas` (`id`, `hora`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `intervalo_horarios`
+--
+
+CREATE TABLE `intervalo_horarios` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `intervalo` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `intervalo_horarios`
+--
+
+INSERT INTO `intervalo_horarios` (`id`, `user_id`, `intervalo`, `created_at`, `updated_at`) VALUES
+(1, 16, 20, '2023-10-06 14:56:21', '2023-10-06 15:04:31'),
+(2, 9, 30, '2023-10-06 15:08:01', '2023-10-06 15:08:55'),
+(3, 10, 15, '2023-10-06 15:09:24', '2023-10-06 15:09:24');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `mes`
 --
 
@@ -361,7 +375,7 @@ INSERT INTO `mes` (`id`, `mes`, `state`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `migrations` (
   `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -496,22 +510,22 @@ CREATE TABLE `persona` (
 INSERT INTO `persona` (`id`, `id_user`, `ci`, `paterno`, `materno`, `nombre`, `genero`, `foto`, `telefono`, `celular`, `estado_civil`, `fecha_nacimiento`, `edad`, `direccion`, `email`, `state`, `created_at`, `updated_at`, `lugar_nacimiento`, `id_especialidad`, `domicilio`, `familiar_responsable`, `id_role`) VALUES
 (1, 1, '8009525', 'LAURA', 'GUTIERREZ', 'MELANI', '', '1626550531_New-Sac-Kings-Logo-3.0.jpg', '75635412', '85452111', 'SOLTERO', '1985-03-02', 0, '.', 'melani@gmail.com', 1, NULL, '2021-07-17 19:35:31', '', 2, '', '', 1),
 (22, 7, '9214785', 'PEREZ', 'AQUINO', 'LUIS', NULL, '1625873075_New-Sac-Kings-Logo-3.0.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'fulanito@gmail.com', 1, '2021-07-09 23:24:36', '2021-07-17 16:46:07', NULL, NULL, NULL, NULL, 1),
-(23, 8, '852364', 'TITO', 'MAIZ', 'JUAN', NULL, '1625873166_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', '', 1, '2021-07-09 23:26:06', '2021-07-09 23:26:06', NULL, NULL, NULL, NULL, 1),
-(24, 9, '7412586', 'MANTIS', 'RELIGIOSA', 'LUCIA', NULL, '1625873204_New-Sac-Kings-Logo-3.0.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', '', 1, '2021-07-09 23:26:44', '2021-08-21 19:44:04', NULL, 1, NULL, NULL, 2),
-(25, 10, '74125321', 'CONDORI', 'CHUQUIMIA', 'FREDDY', NULL, '1625873327_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', '', 1, '2021-07-09 23:28:47', '2021-08-21 19:44:24', NULL, 2, NULL, NULL, 2),
-(26, 11, '7412321', 'YUJRA', 'VALENCIA', 'MARIA', NULL, '1625873390_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', '', 1, '2021-07-09 23:29:50', '2021-07-09 23:29:50', NULL, 1, NULL, NULL, 3),
-(27, 12, '1232145', 'MARTINS', 'LEON', 'LUCAS', NULL, '1625873432_New-Sac-Kings-Logo-3.0.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', '', 1, '2021-07-09 23:30:32', '2021-07-09 23:30:33', NULL, NULL, NULL, NULL, 1),
+(23, 8, '852364', 'TITO', 'MAIZ', 'JUAN', NULL, '1625873166_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'juan@webcentroem.com', 1, '2021-07-09 23:26:06', '2023-10-06 10:40:27', NULL, NULL, NULL, NULL, 1),
+(24, 9, '7412586', 'MANTIS', 'RELIGIOSA', 'LUCIA', NULL, '1625873204_New-Sac-Kings-Logo-3.0.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'lucia@webcentroem.com', 1, '2021-07-09 23:26:44', '2023-10-06 10:40:27', NULL, 1, NULL, NULL, 2),
+(25, 10, '74125321', 'CONDORI', 'CHUQUIMIA', 'FREDDY', NULL, '1625873327_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'freddy@webcentroem.com', 1, '2021-07-09 23:28:47', '2023-10-06 10:40:27', NULL, 2, NULL, NULL, 2),
+(26, 11, '7412321', 'YUJRA', 'VALENCIA', 'MARIA', NULL, '1625873390_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'maria@webcentroem.com', 1, '2021-07-09 23:29:50', '2023-10-06 10:40:27', NULL, 1, NULL, NULL, 3),
+(27, 12, '1232145', 'MARTINS', 'LEON', 'LUCAS', NULL, '1625873432_New-Sac-Kings-Logo-3.0.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'lucas@webcentroem.com', 1, '2021-07-09 23:30:32', '2023-10-06 10:40:27', NULL, NULL, NULL, NULL, 1),
 (28, 13, '78945612', '', '', 'ALBERTO', 'HOMBRE', '1625948854_vision.jpg', '', NULL, '', '2021-01-01', 20, '', '', 1, '2021-07-10 00:58:28', '2021-07-10 20:27:34', '', 1, 'EN SU CASA', '', 4),
 (29, 14, '78945612', 'PEREZ', 'MAIZ', 'NANCI', 'MUJER', '1625940543_mision.jpg', '7451241', NULL, 'CONVIVIENTE', '2021-01-01', 20, '', 'NANCI@GMAIL.COM', 1, '2021-07-10 00:59:04', '2021-07-10 18:09:03', 'EN SU CASA', 1, 'EN SU CASA', 'UN SEñOR RESPONSABLE', 4),
 (30, 15, '8411254', 'PEREZ', 'ZUARES', 'KIMBERLI', 'MUJER', NULL, '', NULL, 'SOLTERO', '2011-01-01', 10, '', '', 1, '2021-07-13 23:45:59', '2021-07-13 23:45:59', '', 5, '.', '', 4),
 (31, 16, '12345678 LP', 'BERRIOS', 'CHAMBI', 'RUBEN', NULL, '1626540905_New-Sac-Kings-Logo-3.0.jpg', '77747477', '74747474', 'SOLTERO', NULL, NULL, 'LA PAZ, TEMBLADERANI #500', 'ruben@gmail.com', 1, '2021-07-17 16:55:05', '2021-08-21 19:49:11', NULL, 2, NULL, NULL, 2),
-(32, 17, '4747478', '', '', 'NORMA', NULL, '1628549855_BRUJULA.jpg', '74747474', '74747474', 'SOLTERO', NULL, NULL, 'CERCA DE ALLA', '', 1, '2021-08-09 22:57:35', '2021-08-09 23:08:52', NULL, 1, NULL, NULL, 3),
+(32, 17, '4747478', '', '', 'NORMA', NULL, '1628549855_BRUJULA.jpg', '74747474', '74747474', 'SOLTERO', NULL, NULL, 'CERCA DE ALLA', 'norma@webcentroem.com', 1, '2021-08-09 22:57:35', '2023-10-06 10:40:27', NULL, 1, NULL, NULL, 3),
 (34, 18, '1414145', 'PERES', 'PERES', 'LIMBER', 'HOMBRE', '1628566211_BRUJULA.jpg', '74747474', NULL, 'SOLTERO', '1990-10-10', 31, '', 'limber@gmail.com', 1, '2021-08-10 03:30:11', '2021-08-10 03:30:12', 'LA PAZ', 1, 'MI CASA', 'RUBEN', 4),
 (35, 19, '7474744774', 'PATERNO', 'MATERNO', 'LIMBER', 'HOMBRE', NULL, '74747474', NULL, '', '1990-10-10', 20, '', 'limberl@gmail.com', 1, '2021-08-10 03:51:48', '2021-08-10 03:51:48', 'LA PAZ', 1, '.', 'RUBEN', 4),
 (36, 20, '8787875', 'PEREZ', 'AQUINO', 'PETER', 'HOMBRE', '1628949770_BRUJULA.jpg', '74747474', NULL, 'CASADO', '1990-10-10', 31, '', 'peter@gmail.com', 1, '2021-08-14 14:02:51', '2021-08-14 14:02:52', 'LA PAZ', 1, 'LA PAZ - SOPOCACHI', 'RUBEN', 4),
 (37, 21, '7654321', 'PEREZ', 'SANCHEZ', 'MONICA', 'MUJER', '1630252515_BRUJULA.jpg', '69584748', NULL, 'CASADO', '1985-10-10', 35, '', 'monica@gmail.com', 1, '2021-08-29 15:55:15', '2021-08-29 15:55:15', 'LA PAZ', 3, 'LA PAZ', 'DON JHONNY', 4),
 (40, 24, '123456', 'MENDOZA', 'PAREDES', 'RAFAEL', 'HOMBRE', '1632165006_0 (1).jpg', '2885652', NULL, 'SOLTERO', '1990-05-12', 31, '', 'unetehost@gmail.com', 1, '2021-09-20 19:10:06', '2021-09-20 19:10:06', 'LA PAZ', 1, 'ZONA CENTRAL CALLE 3', 'JUAN MENDOZA', 4),
-(41, 25, '55555', 'MORALES', '', 'JOSE', NULL, '1684855708_user_default.png', '22222', '777777', 'SOLTERO', NULL, NULL, 'LOS OLIVOS', '', 1, '2023-05-23 15:28:28', '2023-05-23 15:29:37', NULL, NULL, NULL, NULL, 1),
+(41, 25, '55555', 'MORALES', '', 'JOSE', NULL, '1684855708_user_default.png', '22222', '777777', 'SOLTERO', NULL, NULL, 'LOS OLIVOS', 'jose@webcentroem.com', 1, '2023-05-23 15:28:28', '2023-10-06 10:40:27', NULL, NULL, NULL, NULL, 1),
 (42, 26, '3333', 'GUTIERREZ', 'MAMANI', 'PAMELA', 'MUJER', NULL, '', NULL, '', '1999-03-22', 24, '', 'pamela@gmail.com', 1, '2023-05-23 11:40:24', '2023-08-31 10:51:38', 'LA PAZ', 1, 'LOS OLIVOS', '', 4),
 (43, 27, '6666', 'ALCANTARA', 'MARTINEZ', 'PEDRO', 'HOMBRE', NULL, '222222', NULL, '', '1999-01-01', 24, '', 'pedro@gmail.com', 1, '2023-05-23 11:50:48', '2023-05-23 11:51:16', '', 2, 'LOS OLIVOS', '', 4);
 
@@ -524,17 +538,10 @@ INSERT INTO `persona` (`id`, `id_user`, `ci`, `paterno`, `materno`, `nombre`, `g
 CREATE TABLE `persona_telegrams` (
   `id` bigint UNSIGNED NOT NULL,
   `persona_id` bigint UNSIGNED NOT NULL,
-  `chat_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `chat_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `persona_telegrams`
---
-
-INSERT INTO `persona_telegrams` (`id`, `persona_id`, `chat_id`, `created_at`, `updated_at`) VALUES
-(1, 28, '5627243465', '2023-08-31 19:51:30', '2023-08-31 19:51:30');
 
 -- --------------------------------------------------------
 
@@ -838,7 +845,10 @@ CREATE TABLE `recordatorios` (
 INSERT INTO `recordatorios` (`id`, `fecha`, `created_at`, `updated_at`) VALUES
 (1, '2023-05-23', '2023-05-23 19:33:54', '2023-05-23 19:33:54'),
 (2, '2023-08-30', '2023-08-30 20:02:46', '2023-08-30 20:02:46'),
-(7, '2023-08-31', '2023-08-31 20:06:01', '2023-08-31 20:06:01');
+(3, '2023-08-31', '2023-08-31 21:17:01', '2023-08-31 21:17:01'),
+(4, '2023-09-13', '2023-09-13 16:08:41', '2023-09-13 16:08:41'),
+(5, '2023-09-24', '2023-09-24 22:40:39', '2023-09-24 22:40:39'),
+(6, '2023-10-06', '2023-10-06 13:34:53', '2023-10-06 13:34:53');
 
 -- --------------------------------------------------------
 
@@ -944,7 +954,7 @@ INSERT INTO `seguimiento` (`id`, `id_persona`, `id_especialidad`, `id_persona_do
 
 CREATE TABLE `telegram_updates` (
   `id` bigint UNSIGNED NOT NULL,
-  `update_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `update_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -971,24 +981,24 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `state`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@gmail.com', '$2y$10$wuTuUildBSgVYfvHomvXWuVLF6T1PWByEZJelnC9LOSQ/Xwcw2N3S', 'GdMuvMCixkWI3P41VN21GOdQwUs4ZRYeWLWhFCRE3CWl7Ok6csPZHw6F9zzi', 1, '2019-03-04 00:00:00', '2021-07-16 17:31:41'),
-(7, '10001', '10001@sis.net', '$2y$10$zilrSbbGImsnexkrngzK2evtBehtlXela/spO86U9wO80VFLtoyia', NULL, 1, '2021-07-09 23:24:36', '2021-07-09 23:24:36'),
-(8, '10002', '10002@sis.net', '$2y$10$rSWByV/f0UaiYqABvQI7run9bVO2Mbo7D3fgJs1hUdTIKWIutiZgK', NULL, 1, '2021-07-09 23:26:06', '2021-07-09 23:26:06'),
-(9, '20001', '20001@sis.net', '$2y$10$2CW7YY.iY0spTEsHeYMWKeoSGo6inwBaviihw6BfSyy3FF3v8fRaS', NULL, 1, '2021-07-09 23:26:44', '2021-07-09 23:26:44'),
-(10, '20002', '20002@sis.net', '$2y$10$6vnMhnn97eCKgok4gxPWXud.vX10VciZ9CECNl3gVZYBrce1Il2Vm', NULL, 1, '2021-07-09 23:28:47', '2021-07-09 23:28:47'),
-(11, '30001', '30001@sis.net', '$2y$10$8wJ.2jEoGVt6rN2KIOgs9up4k08bx7EFX4gSYWZdwknT63sgUV5XK', NULL, 1, '2021-07-09 23:29:50', '2021-07-09 23:29:50'),
-(12, '10003', '10003@sis.net', '$2y$10$IaTU/OGlKCTcKJh5V3OydOIHgK04AlQ8lTu4pakQGc4.Ol2JLvPDe', NULL, 1, '2021-07-09 23:30:33', '2021-07-09 23:30:33'),
+(1, 'admin', 'melani@gmail.com', '$2y$10$wuTuUildBSgVYfvHomvXWuVLF6T1PWByEZJelnC9LOSQ/Xwcw2N3S', 'wzxqGLqLb1mkiPKZYdFPYZLdKmkO7P2zB4wMSNbgVLcjD6A4FKSDbrMOQjty', 1, '2019-03-04 00:00:00', '2023-10-06 10:40:27'),
+(7, '10001', 'fulanito@gmail.com', '$2y$10$zilrSbbGImsnexkrngzK2evtBehtlXela/spO86U9wO80VFLtoyia', NULL, 1, '2021-07-09 23:24:36', '2023-10-06 10:40:27'),
+(8, '10002', 'juan@webcentroem.com', '$2y$10$rSWByV/f0UaiYqABvQI7run9bVO2Mbo7D3fgJs1hUdTIKWIutiZgK', NULL, 1, '2021-07-09 23:26:06', '2023-10-06 10:40:27'),
+(9, '20001', 'lucia@webcentroem.com', '$2y$10$2CW7YY.iY0spTEsHeYMWKeoSGo6inwBaviihw6BfSyy3FF3v8fRaS', NULL, 1, '2021-07-09 23:26:44', '2023-10-06 10:40:27'),
+(10, '20002', 'freddy@webcentroem.com', '$2y$10$6vnMhnn97eCKgok4gxPWXud.vX10VciZ9CECNl3gVZYBrce1Il2Vm', NULL, 1, '2021-07-09 23:28:47', '2023-10-06 10:40:27'),
+(11, '30001', 'maria@webcentroem.com', '$2y$10$8wJ.2jEoGVt6rN2KIOgs9up4k08bx7EFX4gSYWZdwknT63sgUV5XK', NULL, 1, '2021-07-09 23:29:50', '2023-10-06 10:40:27'),
+(12, '10003', 'lucas@webcentroem.com', '$2y$10$IaTU/OGlKCTcKJh5V3OydOIHgK04AlQ8lTu4pakQGc4.Ol2JLvPDe', NULL, 1, '2021-07-09 23:30:33', '2023-10-06 10:40:27'),
 (13, '40001', '10004@sis.net', '$2y$10$z5ueybtJNEE6DvZSjnGbZeCxANCG9QIUUjAodOutQPKSkSCNRvdfy', NULL, 1, '2021-07-10 00:58:28', '2021-07-10 00:58:28'),
 (14, '40002', '10005@sis.net', '$2y$10$qR1hWTvfDYTUEL/JPSxeKe9tcdUSeVYVQhaShN35Ni9a6HIFDdiAO', NULL, 1, '2021-07-10 00:59:05', '2021-07-10 01:21:26'),
 (15, '40005', '40005@sis.net', '$2y$10$0fuhgU7WU13C/lHeO3sxuuPlPmidQcNYLvA8OVqzNBr4GT5r/Dyda', NULL, 1, '2021-07-13 23:45:59', '2021-07-13 23:45:59'),
-(16, '20003', '20003@sis.net', '$2y$10$AcH5eHyziuqgzmTZr/s15.gGJGnZDordxKYpASs0GPZDlModaiT62', NULL, 1, '2021-07-17 16:55:06', '2021-07-17 16:55:06'),
-(17, '30002', '30002@sis.net', '$2y$10$m.EyI7AW3Y8Csn.baWbYauyZWZ1nCUAdkX30HlVWo3GzOV0lNziLO', NULL, 1, '2021-08-09 22:57:36', '2021-08-09 22:57:36'),
-(18, 'limber@gmail.com', 'limber@gmail.com', '$2y$10$1J7DnrHd6UaEFgAbBuuZkuPkdbAgEHDWDIPWRtDmAZO6M12ZxNNB.', NULL, 1, '2021-08-10 03:30:12', '2021-08-10 03:30:12'),
+(16, '20003', 'ruben@gmail.com', '$2y$10$AcH5eHyziuqgzmTZr/s15.gGJGnZDordxKYpASs0GPZDlModaiT62', NULL, 1, '2021-07-17 16:55:06', '2023-10-06 10:40:27'),
+(17, '30002', 'norma@webcentroem.com', '$2y$10$m.EyI7AW3Y8Csn.baWbYauyZWZ1nCUAdkX30HlVWo3GzOV0lNziLO', NULL, 1, '2021-08-09 22:57:36', '2023-10-06 10:40:27'),
+(18, 'limber@gmail.com', 'limber@gmail.com', '$2y$10$wuTuUildBSgVYfvHomvXWuVLF6T1PWByEZJelnC9LOSQ/Xwcw2N3S', NULL, 1, '2021-08-10 03:30:12', '2021-08-10 03:30:12'),
 (19, 'limberl@gmail.com', 'limberl@gmail.com', '$2y$10$0IkqyZhhjIkYW5luknitP./HrmWKIwyE7D3yUMqUGkobrp.ZJUWi.', NULL, 1, '2021-08-10 03:51:48', '2021-08-10 03:51:48'),
 (20, 'peter@gmail.com', 'peter@gmail.com', '$2y$10$Ox27OsVGqZvl88zMJbhale0/otDxPjO7S78bnQyn0cKA8iFiBMC8W', NULL, 1, '2021-08-14 14:02:52', '2021-08-14 14:02:52'),
 (21, 'monica@gmail.com', 'monica@gmail.com', '$2y$10$YcGwGqhrNHbI8rsur659OOmjgUmengcqXazhQbO1FDsjrk/KpE.tK', NULL, 1, '2021-08-29 15:55:15', '2021-08-29 15:55:15'),
 (24, 'unetehost@gmail.com', 'unetehost@gmail.com', '$2y$10$D4F3REy/SGWaCsDp75ikAul8wJjth1torQWTgaZXLWh9gJUHAH5Sm', NULL, 1, '2021-09-20 19:10:06', '2021-09-20 19:10:06'),
-(25, '20004', '20004@sis.net', '$2y$10$RYfsb17OcxCK3jVBdv56D.cJu.l36440dVdXXUS4YnZ71Yqn.ZX5u', NULL, 1, '2023-05-23 15:28:28', '2023-05-23 15:30:30'),
+(25, '20004', 'jose@webcentroem.com', '$2y$10$RYfsb17OcxCK3jVBdv56D.cJu.l36440dVdXXUS4YnZ71Yqn.ZX5u', NULL, 1, '2023-05-23 15:28:28', '2023-10-06 10:40:27'),
 (26, 'pamela@gmail.com', 'pamela@gmail.com', '$2y$10$wBPzoTNfNFuJbFZBc34oauSub/PP7Zt/f3It17pt5/sFDFx5wwI7y', NULL, 1, '2023-05-23 11:40:24', '2023-05-23 11:40:24'),
 (27, 'pedro@gmail.com', 'pedro@gmail.com', '$2y$10$eNMgu4.bLC9EbuZJFiSrhOEqtDyYskt4cH8b/NFeoeRh8smJAiKRO', NULL, 1, '2023-05-23 11:50:48', '2023-05-23 11:51:16');
 
@@ -1048,6 +1058,12 @@ ALTER TABLE `historial_clinico`
 -- Indices de la tabla `horas`
 --
 ALTER TABLE `horas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `intervalo_horarios`
+--
+ALTER TABLE `intervalo_horarios`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1146,13 +1162,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `bot_telegrams`
 --
 ALTER TABLE `bot_telegrams`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `cita_medica`
 --
 ALTER TABLE `cita_medica`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `codigo_usuario`
@@ -1164,7 +1180,7 @@ ALTER TABLE `codigo_usuario`
 -- AUTO_INCREMENT de la tabla `doctor_horarios`
 --
 ALTER TABLE `doctor_horarios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `especialidad`
@@ -1189,6 +1205,12 @@ ALTER TABLE `historial_clinico`
 --
 ALTER TABLE `horas`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT de la tabla `intervalo_horarios`
+--
+ALTER TABLE `intervalo_horarios`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `mes`
@@ -1236,7 +1258,7 @@ ALTER TABLE `prueba`
 -- AUTO_INCREMENT de la tabla `recordatorios`
 --
 ALTER TABLE `recordatorios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
