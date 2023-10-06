@@ -239,6 +239,10 @@ Route::get("vista-reporte-factura", "ReporteController@factura")
 Route::get("reporte-factura", "ReporteController@reporteFactura")
     ->middleware('has.permission:generar.reportes');
 
+Route::get("vista-reporte-grafico-pagos", "ReporteController@graficoPagos")
+    ->middleware('has.permission:generar.reportes');
+Route::get("reporte-grafico-pagos", "ReporteController@infoGraficoPagos")
+    ->middleware('has.permission:generar.reportes')->name("reporte.grafico_pagos");
 
 Route::get("paciente-reporte/{id}", "PacienteController@reportePaciente");
 Route::get("paciente-datos-registro", "PacienteController@reportePacienteDatosRegistro");

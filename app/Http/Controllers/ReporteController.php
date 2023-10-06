@@ -26,7 +26,9 @@ use App\Http\Controllers\Reportes\ReporteCantidadVentas;
 use App\Http\Controllers\Reportes\ReporteCantidadSolicitudesPedido;
 use App\Http\Controllers\Reportes\reporteCitaMedica;
 use App\Http\Controllers\Reportes\ReporteFacturas;
+use App\Models\Factura;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Storage;
 
 class ReporteController extends Controller
@@ -106,6 +108,62 @@ class ReporteController extends Controller
     }
 
 
+    public function graficoPagos()
+    {
+        $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
+        $gestion_min = Factura::orderBy("created_at", "asc")->get()->first();
+        $gestion_max = Factura::orderBy("created_at", "asc")->get()->last();
+        $gestion_min = date("Y", strtotime($gestion_min->created_at));
+        $gestion_max = date("Y", strtotime($gestion_max->created_at));
+        $array_gestiones = [$gestion_min];
+        if ($gestion_min != $gestion_max) {
+            $array_gestiones = [];
+            for ($i = (int)$gestion_min; $i <= (int)$gestion_max; $i++) {
+                $array_gestiones[] = $i;
+            }
+        }
+        return view("reportes.grafico_pagos")->with("especialidad", $especialidad)->with("array_gestiones", $array_gestiones);
+    }
+
+    public function infoGraficoPagos(Request $request)
+    {
+        $id_especialidad = $request->id_especialidad;
+        $gestion = $request->gestion;
+
+        $especialidad = DB::select("SELECT * FROM especialidad WHERE id = ? LIMIT 1", [$id_especialidad]);
+
+        $gestion_max = Factura::orderBy("created_at", "asc")->get()->last();
+        $gestion_max = date("Y", strtotime($gestion_max->created_at));
+        $gestion_buscar = $gestion_max;
+        $meses = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        $meses_texto = [
+            "01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo",
+            "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"
+        ];
+
+        if ($gestion != '') {
+            $gestion_buscar = $gestion;
+        }
+
+        $data = [];
+        foreach ($meses as $mes) {
+            $fecha_like = $gestion_buscar . '-' . $mes;
+            $sum = Factura::where("fecha_factura", "LIKE", "$fecha_like%")->sum("monto");
+            if ($id_especialidad != "todos") {
+                $sum = Factura::where("fecha_factura", "LIKE", "$fecha_like%")->where("id_especialidad", $id_especialidad)->sum("monto");
+            }
+            $data[] = [
+                $meses_texto[$mes], (float)$sum
+            ];
+        }
+        // return response()->JSON($especialidad[0]);
+        return response()->JSON([
+            "data" => $data,
+            "gestion" => $gestion_buscar,
+            "nombre" => count($especialidad) > 0 ? $especialidad[0]->especialidad : 'TODOS'
+
+        ]);
+    }
 
 
     public function reporteUsuarios()

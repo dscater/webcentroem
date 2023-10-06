@@ -142,7 +142,7 @@
                                         </div>
                                         <!-- begin col-2 -->
                                         <div class="form-group col-md-12" style="padding:0">
-                                            <label class="app-label email"><span></span> Email:</label>
+                                            <label class="app-label email"><span>*</span> Email:</label>
                                             <input name="email" value="{{$persona->email}}" class="app-form-control form-control  fadeInLeft animated" id="input-email" type="text" requiredD="">
                                             @if ($errors->has('email'))
                                             <div class="app-alert alert alert-danger">{{$errors->first('email')}}</div>

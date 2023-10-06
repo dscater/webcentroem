@@ -203,7 +203,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4 col-12">
+                            {{-- <div class="col-md-4 col-12">
                                 <div class="panel" style="border: 1px solid #ababab">
                                     <div class="panel-body">
                                         <div class="col-md-12 col-12 text-center">
@@ -215,9 +215,9 @@
                                         
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="col-md-4 col-12">
+                            {{-- <div class="col-md-4 col-12">
                                 <div class="panel" style="border: 1px solid #ababab">
                                     <div class="panel-body">
                                         <div class="col-md-12 col-12 text-center">
@@ -229,7 +229,7 @@
                                         
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             @endif
                             
                             

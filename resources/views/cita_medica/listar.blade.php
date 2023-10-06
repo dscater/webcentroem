@@ -117,7 +117,10 @@ use App\Helpers\FuncionesComunes;
                                 @if(!auth()->user()->hasRole("paciente"))
                                 <button class="btn btn-xs btn-danger" onclick="clickEliminar({{$value->id}})" title="" ><span class="fa fa-trash"></span> Eliminar</Button>
                                 @endif
+
+                                @if(!auth()->user()->hasRole('paciente') && !auth()->user()->hasRole('doctor'))
                                 <a class="btn btn-xs btn-info" href="{{url('/factura-nuevo')}}?nrop={{$value->id_paciente}}" title=""><span class="fa fa-money"></span> Nuevo Pago</a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

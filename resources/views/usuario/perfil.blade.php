@@ -63,7 +63,7 @@
                                         <?php $email=(!empty(old('email')))?old('email'):(((!empty($usuario->email))?$usuario->email:''))?>
                                         <label class="app-label email"><span></span>  Usuario:</label>
                                         <div class="div-create-email">
-                                            <input name="email" value="{{$usuario->name}}" class="app-form-control form-control  fadeInLeft animated" id="input-email" type="text" disabled>
+                                            <input name="email" value="{{$usuario->email}}" class="app-form-control form-control  fadeInLeft animated" id="input-email" type="text" disabled>
                                         </div>
                                         @if ($errors->has('email'))
                                         <div class="app-alert alert alert-danger">{{$errors->first('email')}}</div>

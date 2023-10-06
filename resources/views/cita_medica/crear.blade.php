@@ -116,12 +116,16 @@
                                         @endif
                                         <div class="app-alert alert alert-danger" style="display:none" id="alert-fecha">El
                                             campo es requerido para mostrar horas</div>
+                                        <div class="app-alert alert alert-danger" style="display:none"
+                                            id="alert-fecha-error">La fecha no es valida, debe ser una fecha igual o mayor
+                                            al día de hoy</div>
                                     </div>
                                     <div class="app-form-group form-group col-md-12">
-                                        <button class="btn btn-success" type="button" onclick="getHoras()">Buscar
+                                        <button class="btn btn-success" id="btnBuscarHoras" type="button"
+                                            onclick="getHoras()">Buscar
                                             horas</button>
                                     </div>
-                                    <div class="app-form-group form-group col-md-12">
+                                    <div class="app-form-group form-group col-md-12 contenedor_horas">
                                         <label class="app-label"><span>*</span> Horas:</label>
                                         <div class="div-create-id_especialidad">
                                             <select name="hora" id="hora" class="form-control chosen-select"
@@ -148,6 +152,8 @@
 @section('script_3')
     <script>
         $('document').ready(function() {
+            $("#btnBuscarHoras").hide();
+            $(".contenedor_horas").hide();
             $("#menu-cita-medico-nuevo").addClass("active");
 
             $("#btn-foto").click(function() {
@@ -166,12 +172,42 @@
 
         });
 
-        $("#fecha_cita").on("change", function() {
-            $("#hora").html("");
-            $("#hora").append('<option value="">Seleccionar</option>');
-            $("#hora").val("");
-            $("#hora").trigger("chosen:updated")
+        $("#fecha_cita").on("change keyup", function() {
+            if (validaFecha()) {
+                $("#hora").html("");
+                $("#hora").append('<option value="">Seleccionar</option>');
+                $("#hora").val("");
+                $("#hora").trigger("chosen:updated")
+                $("#btnBuscarHoras").show();
+                $(".contenedor_horas").show();
+                $("#alert-fecha-error").hide();
+            } else {
+                $("#hora").html("");
+                $("#hora").append('<option value="">Seleccionar</option>');
+                $("#hora").val("");
+                $("#hora").trigger("chosen:updated")
+                $("#alert-fecha-error").show();
+                $("#btnBuscarHoras").hide();
+                $(".contenedor_horas").hide();
+            }
         })
+
+        function validaFecha() {
+            // Obtener la fecha ingresada en el formato "yyyy-mm-dd"
+            let fechaIngresada = $("#fecha_cita").val();
+
+            // Obtener la fecha actual en el mismo formato "yyyy-mm-dd"
+            let fechaActual = new Date().toISOString().slice(0, 10);
+
+            // Comparar las fechas
+            if (fechaIngresada < fechaActual) {
+                return false; // Devuelve false para evitar enviar el formulario
+            }
+
+            // La fecha es válida
+            return true;
+        }
+
 
         $("#id_especialidad").on("change", function() {
             $("#hora").html("");

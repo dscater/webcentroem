@@ -39,15 +39,22 @@ class DoctorHorario extends Model
                 "tarde" => [],
             ];
 
+            // intervalo doctor 
+            $intervalo = 15;
+            $ih = IntervaloHorario::where("user_id", $doctor_horario->user_id)->get()->first();
+            if ($ih) {
+                $intervalo = $ih->intervalo ? $ih->intervalo : 15;
+            }
+
             // horarios doctor
             // turno maniana
             if ($inicio_maniana != '00:00' && $fin_maniana != '00:00') {
-                $horario_generado = self::generarHorarios($inicio_maniana, $fin_maniana, 15, $doctor_horario->user_id, $fecha);
+                $horario_generado = self::generarHorarios($inicio_maniana, $fin_maniana, $intervalo, $doctor_horario->user_id, $fecha);
                 $nuevo_horario["maniana"] = $horario_generado;
             }
             // turno tarde
             if ($inicio_tarde != '00:00' && $fin_tarde != '00:00') {
-                $horario_generado = self::generarHorarios($inicio_tarde, $fin_tarde, 15, $doctor_horario->user_id, $fecha);
+                $horario_generado = self::generarHorarios($inicio_tarde, $fin_tarde, $intervalo, $doctor_horario->user_id, $fecha);
                 $nuevo_horario["tarde"] = $horario_generado;
             }
             $horarios[] = $nuevo_horario;
@@ -134,6 +141,19 @@ class DoctorHorario extends Model
                 ]);
             }
         }
+        self::verificaIntervaloHorario($usuario);
+    }
+
+    public static function verificaIntervaloHorario(Usuario $usuario)
+    {
+        $existe_intervalo = IntervaloHorario::where("user_id", $usuario->id)->get()->first();
+        if (!$existe_intervalo) {
+            IntervaloHorario::create([
+                "user_id" => $usuario->id,
+                "intervalo" => 15,
+            ]);
+        }
+        return $existe_intervalo;
     }
 
     public function user()

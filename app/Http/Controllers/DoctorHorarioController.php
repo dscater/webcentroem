@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DoctorHorario;
+use App\IntervaloHorario;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,11 @@ class DoctorHorarioController extends Controller
         $tm_hora_fin = $request->tm_hora_fin;
         $tt_hora_ini = $request->tt_hora_ini;
         $tt_hora_fin = $request->tt_hora_fin;
+        $intervalo = $request->intervalo;
+
+        $ih = IntervaloHorario::where("user_id", $usuario->id)->get()->first();
+        $ih->intervalo = $intervalo;
+        $ih->save();
 
         for ($i = 0; $i < count($id); $i++) {
             $doctor_horario = DoctorHorario::find($id[$i]);
@@ -47,8 +53,9 @@ class DoctorHorarioController extends Controller
     public function show(Usuario $usuario)
     {
         DoctorHorario::verificaHorarios($usuario);
+        $ih = DoctorHorario::verificaIntervaloHorario($usuario);
         $doctor_horarios = DoctorHorario::where("user_id", $usuario->id)->get();
-        return view("doctor_horarios.show", compact("usuario", "doctor_horarios"));
+        return view("doctor_horarios.show", compact("usuario", "doctor_horarios", "ih"));
     }
     public function destroy(DoctorHorario $doctor_horario)
     {

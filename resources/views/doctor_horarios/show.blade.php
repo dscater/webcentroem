@@ -49,6 +49,14 @@
                                 <div class="col-md-12">
                                     <h5 class="text-center">HORARIOS</h5>
                                 </div>
+                                <div class="col-md-6 col-md-offset-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Intervalo <i class="fa fa-clock"></i></span>
+                                        <input type="number" name="intervalo" min="1" step="1"
+                                            class="form-control" value="{{ $ih->intervalo }}"> <span
+                                            class="input-group-addon">Mins.</span>
+                                    </div>
+                                </div>
                                 <div class="col-md-12">
                                     <table class="table table-bordered">
                                         <thead>

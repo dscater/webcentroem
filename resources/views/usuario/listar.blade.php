@@ -73,7 +73,7 @@
                             <td></td>
                             <td >{{$value->id}}</td>
                             <td >{{$value->rol}}</td>
-                            <td >{{$value->name}}</td>
+                            <td >{{$value->email}}</td>
                             <td >{{$value->nombre}}</td>
                             <td >{{$value->paterno}}</td>
                             <td >{{$value->materno}}</td>

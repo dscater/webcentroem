@@ -219,6 +219,12 @@ $config = Configuracion::find(1);
 		</style>
 	</noscript>
 	@yield("css")
+	<style>
+		.fit-logo-img a img{
+			height: 80px;
+			width: 160px;
+
+		}</style>
 </head>
 
 <body
