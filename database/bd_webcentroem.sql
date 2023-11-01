@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 06-10-2023 a las 16:28:03
+-- Tiempo de generación: 01-11-2023 a las 14:59:58
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -848,7 +848,8 @@ INSERT INTO `recordatorios` (`id`, `fecha`, `created_at`, `updated_at`) VALUES
 (3, '2023-08-31', '2023-08-31 21:17:01', '2023-08-31 21:17:01'),
 (4, '2023-09-13', '2023-09-13 16:08:41', '2023-09-13 16:08:41'),
 (5, '2023-09-24', '2023-09-24 22:40:39', '2023-09-24 22:40:39'),
-(6, '2023-10-06', '2023-10-06 13:34:53', '2023-10-06 13:34:53');
+(6, '2023-10-06', '2023-10-06 13:34:53', '2023-10-06 13:34:53'),
+(7, '2023-11-01', '2023-11-01 14:49:23', '2023-11-01 14:49:23');
 
 -- --------------------------------------------------------
 
@@ -1258,7 +1259,7 @@ ALTER TABLE `prueba`
 -- AUTO_INCREMENT de la tabla `recordatorios`
 --
 ALTER TABLE `recordatorios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
