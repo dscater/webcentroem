@@ -98,7 +98,7 @@ class ReporteFacturas extends \FPDF
                     utf8_decode(FuncionesComunes::serearNumero(8, $value->nro_factura)),
                     utf8_decode(date("d-m-Y", strtotime($value->fecha_factura))),
                     utf8_decode($value->paciente_ci),
-                    utf8_decode($value->paciente_nombre),
+                    utf8_decode($value->paciente_nombre . ($value->tipo_paciente == 'PACIENTE ASEGURADO' ? ($value->institucion != '' ? ' - "' . $value->institucion . '"' : '') : '')),
                     utf8_decode($value->monto),
                 );
                 $this->Ln(1);

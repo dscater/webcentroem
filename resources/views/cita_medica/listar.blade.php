@@ -84,7 +84,7 @@ use App\Helpers\FuncionesComunes;
                             <th id="th-id">C.I.</th>
                             <th id="th-id">Nombre Completo</th>
                             <th id="th-id">Especialidad</th>
-                            <th id="th-nombres">Fecha</th>
+                            <th id="th-nombres">Fecha de atención</th>
                             <th id="th-paterno">Hora</th>
                             <th id="th-paterno">Email</th>
                             <th id="th-crated_at">Fecha de Registro</th>

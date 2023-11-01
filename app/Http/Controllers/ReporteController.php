@@ -80,8 +80,14 @@ class ReporteController extends Controller
 
     public function paciente()
     {
-        $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
-
+        $especialidad = [];
+        if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("secretaria")) {
+            $persona = Persona::find(\DB::select("SELECT id from persona where id_user=" . auth()->user()->id)[0]->id);
+            $id_especialidad = $persona->id_especialidad;
+            $especialidad = \DB::select("SELECT * FROM especialidad where state=1 AND id= $id_especialidad");
+        } else {
+            $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
+        }
         return view("reportes/paciente")
             ->with("especialidad", $especialidad);
     }
@@ -110,7 +116,6 @@ class ReporteController extends Controller
 
     public function graficoPagos()
     {
-        $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
         $gestion_min = Factura::orderBy("created_at", "asc")->get()->first();
         $gestion_max = Factura::orderBy("created_at", "asc")->get()->last();
         $gestion_min = date("Y", strtotime($gestion_min->created_at));
@@ -122,6 +127,17 @@ class ReporteController extends Controller
                 $array_gestiones[] = $i;
             }
         }
+
+        $especialidad = [];
+        if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("secretaria")) {
+            $persona = Persona::find(\DB::select("SELECT id from persona where id_user=" . auth()->user()->id)[0]->id);
+            $id_especialidad = $persona->id_especialidad;
+            $especialidad = \DB::select("SELECT * FROM especialidad where state=1 AND id= $id_especialidad");
+        } else {
+            $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
+        }
+
+
         return view("reportes.grafico_pagos")->with("especialidad", $especialidad)->with("array_gestiones", $array_gestiones);
     }
 
@@ -312,7 +328,19 @@ class ReporteController extends Controller
 
         $data = (object) array();
 
-        $data->resultado = \DB::select("SELECT u.name, 
+        if (auth()->user()->hasRole('doctor') || auth()->user()->hasRole('secretaria')) {
+            $persona = Persona::find(\DB::select("SELECT id from persona where id_user=" . auth()->user()->id)[0]->id);
+            $id_especialidad = $persona->id_especialidad;
+            $data->resultado = \DB::select("SELECT u.name, 
+                                                r.name role, p.*, p.created_at, e.especialidad
+                                            FROM users u
+                                            join persona p on p.id_user = u.id
+                                            join roles r  on p.id_role = r.id
+                                            join especialidad e on p.id_especialidad=e.id
+                                            where r.id=4 and p.state=1 and e.state=1 and p.id_especialidad = $id_especialidad $where 
+                                            order by p.paterno, p.materno, p.nombre");
+        } else {
+            $data->resultado = \DB::select("SELECT u.name, 
                                             r.name role, p.*, p.created_at, e.especialidad
                                         FROM users u
                                         join persona p on p.id_user = u.id
@@ -320,6 +348,7 @@ class ReporteController extends Controller
                                         join especialidad e on p.id_especialidad=e.id
                                         where r.id=4 and p.state=1 and e.state=1 $where
                                         order by p.paterno, p.materno, p.nombre");
+        }
         $data->tipo = "I";
 
         $reporte = new ReportePacientes();
@@ -338,7 +367,7 @@ class ReporteController extends Controller
         $where .= ($hasta == "") ? "" : " and '$hasta 23:59:59'>=p.updated_at ";
 
         $user = Auth::user();
-        if ($user->hasRole('doctor')) {
+        if ($user->hasRole('doctor') || $user->hasRole('secretaria')) {
             $resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
             from persona p
             join especialidad e on p.id_especialidad= e.id
@@ -374,7 +403,7 @@ class ReporteController extends Controller
         $data = (object) array();
 
         $user = Auth::user();
-        if ($user->hasRole('doctor')) {
+        if ($user->hasRole('doctor') || $user->hasRole('secretaria')) {
             $data->resultado = \DB::select("SELECT e.id, e.especialidad, count(*) pacientes
             from persona p
             join especialidad e on p.id_especialidad= e.id

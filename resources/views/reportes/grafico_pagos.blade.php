@@ -118,8 +118,12 @@
                                         <select name="id_especialidad" id="id_especialidad"
                                             class="form-control chosen-select" data-rel="chosen" placeholder="Seleccionar"
                                             required>
-                                            <option value="">Seleccionar</option>
-                                            <option value="todos">Todos</option>
+                                            @if (
+                                                !auth()->user()->hasRole('doctor') &&
+                                                    !auth()->user()->hasRole('secretaria'))
+                                                <option value="">Seleccionar</option>
+                                                <option value="todos">Todos</option>
+                                            @endif
                                             @if (!empty($especialidad))
                                                 @foreach ($especialidad as $key => $value)
                                                     <option value="{{ $value->id }}" <?php echo $value->id == old('id_especialidad') ? 'selected' : ''; ?>>

@@ -106,7 +106,7 @@ class ReporteCitaMedica extends \FPDF {
                     utf8_decode($value->hora),
                     utf8_decode($value->estado),
                     utf8_decode($value->ci),
-                    utf8_decode($value->paterno." ".$value->materno." ".$value->nombre.$value->especialidad),                    
+                    utf8_decode($value->paterno." ".$value->materno." ".$value->nombre),                    
                     utf8_decode($value->telefono),
                 );
                 $this->Ln(1);

@@ -276,10 +276,10 @@ if (!empty($persona->foto)) {
                     @if (auth()->user()->hasRole('paciente'))
                         <li id=""><a href="{{ url('paciente-datos-registro') }}" target="blank">Datos de
                                 Registro</a></li>
-                        <li id=""><a href="{{ url('/reporte-historial-clinico') }}"
+                        {{-- <li id=""><a href="{{ url('/reporte-historial-clinico') }}"
                                 target="blank">Historial Clínico</a></li>
                         <li id=""><a href="{{ url('/reporte-seguimiento-control') }}"
-                                target="blank">Seguimiento y Control</a></li>
+                                target="blank">Seguimiento y Control</a></li> --}}
                     @endif
                     <li id="menu-cita-medico-form-buscar"><a href="{{ url('/cita-medica-form-buscar') }}">Cita
                             Médica</a></li>

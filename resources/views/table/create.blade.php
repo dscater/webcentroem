@@ -100,7 +100,7 @@ use App\Models\TableModel;
                             <div class="col-md-3">
                                 <select name="{{$columnas[$key]->COLUMN_NAME}}"id="select-{{$columnas[$key]->COLUMN_NAME}}" class="form-control chosen-select" data-rel="chosen" data-parsley-group="" >
                                     <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
+                                    <option value="0">Eliminado</option>
                                 </select>
                             </div>
                         </div>

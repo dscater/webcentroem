@@ -100,7 +100,7 @@ use App\Models\TableModel;
                                 <div class="col-md-3 div-edit-{{$columnas[$key]->COLUMN_NAME}}">
                                     <select name="{{$columnas[$key]->COLUMN_NAME}}"id="select-{{$columnas[$key]->COLUMN_NAME}}" class="form-control chosen-select" data-rel="chosen" data-parsley-group="" {{$required}}>
                                         <option value="1" <?php echo ($registro->$nombre_campo==1)?'selected':'';?>>Activo</option>
-                                        <option value="0" <?php echo ($registro->$nombre_campo==0)?'selected':'';?>>Inactivo</option>
+                                        <option value="0" <?php echo ($registro->$nombre_campo==0)?'selected':'';?>>Eliminado</option>
                                     </select>
                                 </div>
                                                                 

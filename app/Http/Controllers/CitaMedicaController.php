@@ -336,7 +336,7 @@ class CitaMedicaController extends Controller
     public function atender($id)
     {
         \DB::select("UPDATE cita_medica set estado='ATENDIDO', updated_at='" . date("Y-m-d H:i:s") . "' where id=$id");
-        \Session::flash('mensaje', 'Se elimino correctamente el registro.');
+        \Session::flash('mensaje', 'El paciente fue atendido');
         \Session::flash('class-alert', 'success');
 
         return redirect('cita-medica-form-buscar');
