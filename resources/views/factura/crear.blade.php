@@ -55,6 +55,30 @@
                                     <h5>DATOS</h5>
                                 </div>
                                 <div class="col-md-12">
+                                    @if (auth()->user()->hasRole('administrador'))
+                                        <div class="form-group col-md-6">
+                                            <label class="app-label"><span>*</span> Especialidad:</label>
+                                            <div class="div-create-id_especialidad_create_factura">
+                                                <select name="id_especialidad" id="id_especialidad_create_factura"
+                                                    class="form-control chosen-select" data-rel="chosen"
+                                                    placeholder="Seleccionar" required>
+                                                    <option value="">Seleccionar</option>
+                                                    <option value="todos">Todos</option>
+                                                    @if (!empty($especialidad))
+                                                        @foreach ($especialidad as $key => $value)
+                                                            <option value="{{ $value->id }}" <?php echo $value->id == old('id_especialidad') ? 'selected' : ''; ?>>
+                                                                {{ $value->especialidad }}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            @if ($errors->has('id_especialidad'))
+                                                <div class="app-alert alert alert-danger">El campo es requerido</div>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="col-md-12">
                                     <div class="form-group col-md-6">
                                         <label class="app-label fecha_factura"><span>*</span> Tipo de paciente:</label>
                                         <div class="div-create-tipo_paciente">

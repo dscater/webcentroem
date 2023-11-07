@@ -86,33 +86,31 @@ class FacturaController extends Controller
      */
     public function create()
     {
+        $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
 
-        return view('factura.crear');
+        return view('factura.crear', compact("especialidad"));
     }
 
     public function store(Request $request)
     {
+        $datos_validacion = [
+            "tipo_paciente" => "required",
+            "fecha_factura" => "required|date",
+            "paciente_ci" => "required",
+            "paciente_nombre" => "required",
+            "concepto" => "required|max:300",
+            "monto" => "required|numeric",
+        ];
 
         if ($request->tipo_paciente == 'PACIENTE ASEGURADO') {
-            $validator = \Validator::make($request->all(), [
-                "tipo_paciente" => "required",
-                "institucion" => "required|min:2",
-                "fecha_factura" => "required|date",
-                "paciente_ci" => "required",
-                "paciente_nombre" => "required",
-                "concepto" => "required|max:300",
-                "monto" => "required|numeric",
-            ]);
-        } else {
-            $validator = \Validator::make($request->all(), [
-                "tipo_paciente" => "required",
-                "fecha_factura" => "required|date",
-                "paciente_ci" => "required",
-                "paciente_nombre" => "required",
-                "concepto" => "required|max:300",
-                "monto" => "required|numeric",
-            ]);
+            $datos_validacion["institucion"] = "required|min:2";
         }
+
+        if (!auth()->user()->hasRole("doctor") && !auth()->user()->hasRole("secretaria")) {
+            $datos_validacion["id_especialidad"] = "required";
+        }
+
+        $validator = \Validator::make($request->all(), $datos_validacion);
 
         if ($validator->fails()) {
             \Session::flash('mensaje', 'No se realizo la acción de registrar.');
@@ -122,36 +120,43 @@ class FacturaController extends Controller
                 ->withInput();
         }
 
-        $id_especialidad = \DB::select("SELECT id_especialidad from persona where id_user=" . auth()->user()->id)[0]->id_especialidad;
-        $nro_factura = \DB::select("SELECT case when max(nro_factura) is null then 1 else max(nro_factura)+1 end nro_factura from factura")[0]->nro_factura;
-        $configuracion = Configuracion::find(1);
-
-        $s = new Factura();
-
-        $s->id_especialidad = $id_especialidad;
-        $s->tipo_paciente = $request->tipo_paciente;
-        if ($request->tipo_paciente == 'PACIENTE ASEGURADO') {
-            $s->institucion = strtoupper($request->institucion);
+        if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("secretaria")) {
+            $persona = Persona::find(\DB::select("SELECT id from persona where id_user=" . auth()->user()->id)[0]->id);
+            $id_especialidad = $persona->id_especialidad;
+        } else {
+            $id_especialidad = $request->id_especialidad;
         }
-        $s->fecha_factura = $request->fecha_factura;
-        $s->nro_factura = $nro_factura;
-        $s->paciente_ci = strtoupper(trim($request->paciente_ci));
-        $s->numero_autorizacion = $configuracion->numero_autorizacion;
-        $s->fecha_limite_emision = $configuracion->fecha_limite_emision;
-        $s->codigo_control = FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr();
-        $s->paciente_nombre = strtoupper(trim($request->paciente_nombre));
-        $s->concepto = strtoupper(trim($request->concepto));
-        $s->monto = $request->monto;
-        $s->state = 1;
+        if ($id_especialidad) {
+            $nro_factura = \DB::select("SELECT case when max(nro_factura) is null then 1 else max(nro_factura)+1 end nro_factura from factura")[0]->nro_factura;
+            $configuracion = Configuracion::find(1);
 
-        $s->save();
+            $s = new Factura();
 
+            $s->id_especialidad = $id_especialidad;
+            $s->tipo_paciente = $request->tipo_paciente;
+            if ($request->tipo_paciente == 'PACIENTE ASEGURADO') {
+                $s->institucion = strtoupper($request->institucion);
+            }
+            $s->fecha_factura = $request->fecha_factura;
+            $s->nro_factura = $nro_factura;
+            $s->paciente_ci = strtoupper(trim($request->paciente_ci));
+            $s->numero_autorizacion = $configuracion->numero_autorizacion;
+            $s->fecha_limite_emision = $configuracion->fecha_limite_emision;
+            $s->codigo_control = FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr();
+            $s->paciente_nombre = strtoupper(trim($request->paciente_nombre));
+            $s->concepto = strtoupper(trim($request->concepto));
+            $s->monto = $request->monto;
+            $s->state = 1;
 
-        \Session::flash('mensaje', 'Se registro correctamente.');
-        \Session::flash('class-alert', 'success');
-
-
-        return redirect('factura-ver/' . $s->id);
+            $s->save();
+            \Session::flash('mensaje', 'Se registro correctamente.');
+            \Session::flash('class-alert', 'success');
+            return redirect('factura-ver/' . $s->id);
+        } else {
+            \Session::flash('mensaje', 'Ocurrió un error. No se pudo registrar el pago debido a que no se seleccionó una especialidad o el usuario no tiene una especialidad asignada');
+            \Session::flash('class-alert', 'danger');
+            return redirect('factura-form-buscar');
+        }
     }
 
     /**
@@ -163,14 +168,17 @@ class FacturaController extends Controller
     {
 
         $factura = Factura::find($id);
+        $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
 
         return view('factura.editar')
-            ->with("factura", $factura);
+            ->with("factura", $factura)
+            ->with("especialidad", $especialidad);
     }
 
     public function update(Request $request, $id)
     {
         $validator = \Validator::make($request->all(), [
+            "id_especialidad" => "required",
             "fecha_factura" => "required|date",
             "paciente_ci" => "required",
             "paciente_nombre" => "required",
