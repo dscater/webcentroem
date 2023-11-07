@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 01-11-2023 a las 14:59:58
+-- Tiempo de generación: 07-11-2023 a las 16:45:39
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 7.4.19
 
@@ -62,7 +62,7 @@ CREATE TABLE `cita_medica` (
 --
 
 INSERT INTO `cita_medica` (`id`, `id_paciente`, `id_especialidad`, `id_doctor`, `fecha_cita`, `hora`, `estado`, `state`, `created_at`, `updated_at`, `email_enviado`) VALUES
-(1, 28, 2, 16, '2023-05-24', '08:00:00', 'NO ATENDIDO', 1, '2023-05-22 20:34:51', '2023-08-31 10:53:15', 1),
+(1, 28, 2, 16, '2023-05-24', '08:00:00', 'ATENDIDO', 1, '2023-05-22 20:34:51', '2023-11-01 11:23:21', 1),
 (2, 42, 2, 16, '2023-05-24', '14:00:00', 'NO ATENDIDO', 1, '2023-05-23 11:42:50', '2023-08-31 10:59:21', 1),
 (3, 29, 2, 16, '2023-09-01', '08:15:00', 'NO ATENDIDO', 1, '2023-08-31 12:41:32', '2023-10-06 10:05:24', 1),
 (4, 30, 2, 16, '2023-09-01', '09:00:00', 'NO ATENDIDO', 1, '2023-08-31 12:51:17', '2023-10-06 10:05:24', 1),
@@ -235,7 +235,10 @@ INSERT INTO `factura` (`id`, `id_paciente`, `tipo_paciente`, `institucion`, `id_
 (2, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', 'Q8-03-11-J3-32', '2022-04-23', 'OCHOA', '9215936', '2021-09-05', 1, 'CONSULTA', 1000.00, 1, '2021-09-05 18:31:29', '2021-09-05 14:31:41'),
 (3, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '96-G3-K5-E1-19', '2022-04-23', 'PERES', '2323', '2023-05-23', 2, 'PRUEBA FACTURA POR 2000 BS', 2000.00, 1, '2023-05-23 19:16:20', '2023-05-23 15:16:20'),
 (4, NULL, 'PACIENTE ASEGURADO', NULL, 2, '7845126', '44-G4-K8-T6-C9', '2022-04-23', 'MAMANI', '3223', '2023-05-23', 3, 'PRUEBA PACIENTE ASEGURADO', 3000.00, 1, '2023-05-23 19:22:03', '2023-05-23 15:22:03'),
-(5, NULL, 'PACIENTE ASEGURADO', 'INSTITUCION PRUEBA', 2, '7845126', '81-D7-B2-83-R0', '2022-04-23', 'GUTIERREZ MAMANI PAMELA', '3333', '2023-08-31', 4, 'CONCEPTO PRUEBA', 1000.00, 1, '2023-08-31 15:46:26', '2023-08-31 11:46:26');
+(5, NULL, 'PACIENTE ASEGURADO', 'INSTITUCION PRUEBA', 2, '7845126', '81-D7-B2-83-R0', '2022-04-23', 'GUTIERREZ MAMANI PAMELA', '3333', '2023-08-31', 4, 'CONCEPTO PRUEBA', 1000.00, 1, '2023-08-31 15:46:26', '2023-08-31 11:46:26'),
+(6, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'P5-30-08-68-03', '2022-04-23', 'JUAN PERES', '444', '2023-11-07', 5, 'PAGO DE PRUEBA', 100.00, 1, '2023-11-07 15:39:27', '2023-11-07 11:39:27'),
+(7, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', 'M1-Y0-H1-33-A5', '2022-04-23', 'JUAN PERES', '1111', '2023-11-07', 6, 'CONCEPTO PRUEBA #2', 50.00, 1, '2023-11-07 15:40:25', '2023-11-07 11:40:25'),
+(8, NULL, 'PACIENTE ASEGURADO', 'S.A', 1, '7845126', 'V6-51-02-08-80', '2022-04-23', 'PERES PERES LIMBER', '1414145', '2023-11-07', 7, 'CONCEPTO #3', 100.00, 1, '2023-11-07 15:40:58', '2023-11-07 11:40:58');
 
 -- --------------------------------------------------------
 
@@ -513,7 +516,7 @@ INSERT INTO `persona` (`id`, `id_user`, `ci`, `paterno`, `materno`, `nombre`, `g
 (23, 8, '852364', 'TITO', 'MAIZ', 'JUAN', NULL, '1625873166_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'juan@webcentroem.com', 1, '2021-07-09 23:26:06', '2023-10-06 10:40:27', NULL, NULL, NULL, NULL, 1),
 (24, 9, '7412586', 'MANTIS', 'RELIGIOSA', 'LUCIA', NULL, '1625873204_New-Sac-Kings-Logo-3.0.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'lucia@webcentroem.com', 1, '2021-07-09 23:26:44', '2023-10-06 10:40:27', NULL, 1, NULL, NULL, 2),
 (25, 10, '74125321', 'CONDORI', 'CHUQUIMIA', 'FREDDY', NULL, '1625873327_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'freddy@webcentroem.com', 1, '2021-07-09 23:28:47', '2023-10-06 10:40:27', NULL, 2, NULL, NULL, 2),
-(26, 11, '7412321', 'YUJRA', 'VALENCIA', 'MARIA', NULL, '1625873390_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'maria@webcentroem.com', 1, '2021-07-09 23:29:50', '2023-10-06 10:40:27', NULL, 1, NULL, NULL, 3),
+(26, 11, '7412321', 'YUJRA', 'VALENCIA', 'MARIA', NULL, '1625873390_mision.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'maria@webcentroem.com', 1, '2021-07-09 23:29:50', '2023-11-01 11:15:12', NULL, 2, NULL, NULL, 3),
 (27, 12, '1232145', 'MARTINS', 'LEON', 'LUCAS', NULL, '1625873432_New-Sac-Kings-Logo-3.0.jpg', '7777777', '7777777', 'SOLTERO', NULL, NULL, '.', 'lucas@webcentroem.com', 1, '2021-07-09 23:30:32', '2023-10-06 10:40:27', NULL, NULL, NULL, NULL, 1),
 (28, 13, '78945612', '', '', 'ALBERTO', 'HOMBRE', '1625948854_vision.jpg', '', NULL, '', '2021-01-01', 20, '', '', 1, '2021-07-10 00:58:28', '2021-07-10 20:27:34', '', 1, 'EN SU CASA', '', 4),
 (29, 14, '78945612', 'PEREZ', 'MAIZ', 'NANCI', 'MUJER', '1625940543_mision.jpg', '7451241', NULL, 'CONVIVIENTE', '2021-01-01', 20, '', 'NANCI@GMAIL.COM', 1, '2021-07-10 00:59:04', '2021-07-10 18:09:03', 'EN SU CASA', 1, 'EN SU CASA', 'UN SEñOR RESPONSABLE', 4),
@@ -849,7 +852,8 @@ INSERT INTO `recordatorios` (`id`, `fecha`, `created_at`, `updated_at`) VALUES
 (4, '2023-09-13', '2023-09-13 16:08:41', '2023-09-13 16:08:41'),
 (5, '2023-09-24', '2023-09-24 22:40:39', '2023-09-24 22:40:39'),
 (6, '2023-10-06', '2023-10-06 13:34:53', '2023-10-06 13:34:53'),
-(7, '2023-11-01', '2023-11-01 14:49:23', '2023-11-01 14:49:23');
+(7, '2023-11-01', '2023-11-01 14:49:23', '2023-11-01 14:49:23'),
+(8, '2023-11-07', '2023-11-07 15:38:58', '2023-11-07 15:38:58');
 
 -- --------------------------------------------------------
 
@@ -982,7 +986,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `state`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'melani@gmail.com', '$2y$10$wuTuUildBSgVYfvHomvXWuVLF6T1PWByEZJelnC9LOSQ/Xwcw2N3S', 'wzxqGLqLb1mkiPKZYdFPYZLdKmkO7P2zB4wMSNbgVLcjD6A4FKSDbrMOQjty', 1, '2019-03-04 00:00:00', '2023-10-06 10:40:27'),
+(1, 'admin', 'melani@gmail.com', '$2y$10$wuTuUildBSgVYfvHomvXWuVLF6T1PWByEZJelnC9LOSQ/Xwcw2N3S', 'bYoxzWibZ1Lia3DXP6CYhu0KsNtI8IJyRam6qUWVXra0QaNHO9NOD4TQxL9T', 1, '2019-03-04 00:00:00', '2023-10-06 10:40:27'),
 (7, '10001', 'fulanito@gmail.com', '$2y$10$zilrSbbGImsnexkrngzK2evtBehtlXela/spO86U9wO80VFLtoyia', NULL, 1, '2021-07-09 23:24:36', '2023-10-06 10:40:27'),
 (8, '10002', 'juan@webcentroem.com', '$2y$10$rSWByV/f0UaiYqABvQI7run9bVO2Mbo7D3fgJs1hUdTIKWIutiZgK', NULL, 1, '2021-07-09 23:26:06', '2023-10-06 10:40:27'),
 (9, '20001', 'lucia@webcentroem.com', '$2y$10$2CW7YY.iY0spTEsHeYMWKeoSGo6inwBaviihw6BfSyy3FF3v8fRaS', NULL, 1, '2021-07-09 23:26:44', '2023-10-06 10:40:27'),
@@ -1193,7 +1197,7 @@ ALTER TABLE `especialidad`
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_clinico`
@@ -1259,7 +1263,7 @@ ALTER TABLE `prueba`
 -- AUTO_INCREMENT de la tabla `recordatorios`
 --
 ALTER TABLE `recordatorios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
