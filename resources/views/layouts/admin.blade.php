@@ -284,6 +284,11 @@ if (!empty($persona->foto)) {
                     <li id="menu-cita-medico-form-buscar"><a href="{{ url('/cita-medica-form-buscar') }}">Cita
                             Médica</a></li>
                     <li id="menu-cita-medico-nuevo"><a href="{{ url('/cita-medica-nuevo') }}">Nueva Cita Médica</a>
+
+
+                        @if (auth()->user()->hasRole('administrador'))
+                    <li id=""><a href="{{ route('backup.index') }}">Backup</a></li>
+                    @endif
                     </li>
                     @if (Auth::user()->roles->first()->name == 'DOCTOR')
                         <li id="menu-cita-medico-nuevo"><a

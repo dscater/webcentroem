@@ -34,12 +34,33 @@ class Recordatorio extends Model
                     $mensaje .= "\n<b>Especialidad:</b> " . $especialidad->especialidad;
                     $mensaje .= "\n<b>Fecha:</b> " . date("d/m/Y", strtotime($cita->fecha_cita));
                     $mensaje .= "\n<b>Hora:</b> " . date("H:i a", strtotime($cita->hora));
+                    $mensaje .= "\n";
+                    $mensaje .= "\n¿DESEA CONFIRMAR LA CITA?";
+
+                    $rol_keyboard = [
+                        'inline_keyboard' => [
+                            [
+                                ['text' => 'SI', 'callback_data' => 'SI'],
+                                ['text' => 'CANCELAR', 'callback_data' => 'CANCELAR'],
+                            ]
+                        ]
+                    ];
+                    $encodedKeyboard = json_encode($rol_keyboard); //formatear el menú
+
                     $datos = array(
                         'chat_id' => $pt->chat_id,
+                        'reply_markup' => $encodedKeyboard,
                         'text' => $mensaje,
                         'parse_mode' => 'HTML'
                     );
                     BotTelegram::send("sendMessage", $datos);
+                    // REGISTRAR RESPUESTA
+                    BotTelegram::create([
+                        "chat_id" => $pt->chat_id,
+                        "valor" => $cita->id . "|",
+                        "comando" => "/confirmar",
+                        "estado" => "PENDIENTE",
+                    ]);
                 }
             }
             Recordatorio::create([

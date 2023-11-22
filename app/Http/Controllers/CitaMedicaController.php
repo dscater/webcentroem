@@ -342,6 +342,35 @@ class CitaMedicaController extends Controller
         return redirect('cita-medica-form-buscar');
     }
 
+    public function cancelar($id)
+    {
+        $cita = CitaMedica::where("id", $id)->get()->first();
+        $persona_telegrams = PersonaTelegram::where("persona_id", $cita->id_paciente)->get();
+        foreach ($persona_telegrams as $pt) {
+            $persona = $pt->persona;
+            $nombre_completo = $persona->nombre . ' ' . $persona->paterno . ($persona->materno ? ' ' . $persona->materno : '');
+            $mensaje = "<b>Cancelación de Cita</b>";
+            $mensaje .= "\nPaciente: " . $nombre_completo;
+            $mensaje .= "\nFecha de Cita: " . date("d/m/Y", strtotime($cita->fecha_cita));
+            $mensaje .= "\nHora: " . date("H:i", strtotime($cita->hora));
+            $mensaje .= "\nEstado: Cancelado";
+            $mensaje .= "\nSu cita fue cancelado por motivos de emergencia por favor registre su nueva cita por nuestra plataforma, Mil disculpas por la molestia y esperamos su comprensión";
+            
+            BotTelegram::send("sendMessage", [
+                'chat_id' => $pt->chat_id,
+                'remove_keyboard' => false,
+                'text' => $mensaje,
+                'parse_mode' => 'HTML'
+
+            ]);
+        }
+        \DB::select("UPDATE cita_medica set estado='CANCELADO', updated_at='" . date("Y-m-d H:i:s") . "' where id=$id");
+        \Session::flash('mensaje', 'La cita fue cancelada1');
+        \Session::flash('class-alert', 'success');
+
+        return redirect('cita-medica-form-buscar');
+    }
+
     public function getHorasByFecha($fecha, $id_especialidad)
     {
         if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("secretaria")) {

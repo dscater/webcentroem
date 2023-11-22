@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\CitaMedica;
 use App\Models\Persona;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -175,6 +176,28 @@ class BotTelegram extends Model
                 $datos = array(
                     'chat_id' => $chatId,
                     'remove_keyboard' => true, //REMOVER EL MENU DE BOTONES
+                    'text' => $mensaje,
+                    'parse_mode' => 'HTML'
+                );
+                break;
+            case "/confirmar":
+                $array_valor = explode("|", $bot_mensaje->valor);
+                $cita = CitaMedica::find($array_valor[0]);
+                $respuesta = trim($texto);
+                $respuesta = mb_strtoupper($respuesta);
+
+                $mensaje = "Muchas gracias por su respuesta";
+                if ($respuesta == 'CANCELAR') {
+                    $cita->estado = 'CANCELADO';
+                    $cita->save();
+                    $mensaje = "Muchas gracias por su respuesta. Su cita fue cancelada";
+                }
+                $bot_mensaje->estado = 'ENVIADO';
+                $bot_mensaje->valor = $bot_mensaje->valor . $texto;
+                $bot_mensaje->save();
+
+                $datos = array(
+                    'chat_id' => $bot_mensaje->chat_id,
                     'text' => $mensaje,
                     'parse_mode' => 'HTML'
                 );

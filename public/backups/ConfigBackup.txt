@@ -1,0 +1,4 @@
+PATH=C:\laragon\bin\mysql\mysql-8.0.30-winx64\bin
+DBNAME=bd_webcentroem
+USER=root
+PASSWORD=

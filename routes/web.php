@@ -180,6 +180,7 @@ Route::get("cita-medica-eliminar/{id}", "CitaMedicaController@delete");
 Route::get("cita-medica-get-hora-por-fecha/{fecha}/{id_especialidad}", "CitaMedicaController@getHorasByFecha");
 
 Route::get("cita-medica-atender/{id}", "CitaMedicaController@atender");
+Route::get("cita-medica-cancelar/{id}", "CitaMedicaController@cancelar");
 Route::get("/cita-medica-buscar-por-fecha/{fecha}", "CitaMedicaController@buscarPorFecha");
 
 Route::get("cita-medica-recordatorio", "CitaMedicaController@enviarRecordatorio");
@@ -265,6 +266,11 @@ Route::post("/bot_telegram", "BotTelegramController@index");
 Route::post("/prueba", "BotTelegramController@prueba");
 Route::get("/bot_telegram", "BotTelegramController@prueba");
 
+// backup
+Route::get("/backup", "BackupController@index")->name("backup.index");
+Route::get("/backup/descargar", "BackupController@descargar")->name("backup.descargar");
+
+// fin backup
 
 Route::get("/", "WebController@index");
 Route::get("/nosotros", "WebController@nosotros");
