@@ -365,7 +365,7 @@ class CitaMedicaController extends Controller
             ]);
         }
         \DB::select("UPDATE cita_medica set estado='CANCELADO', updated_at='" . date("Y-m-d H:i:s") . "' where id=$id");
-        \Session::flash('mensaje', 'La cita fue cancelada1');
+        \Session::flash('mensaje', 'La cita fue cancelada');
         \Session::flash('class-alert', 'success');
 
         return redirect('cita-medica-form-buscar');

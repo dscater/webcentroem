@@ -79,6 +79,7 @@ class DoctorHorario extends Model
         $existe_cita = CitaMedica::where("fecha_cita", $fecha)
             ->where("hora", $nueva_hora)
             ->where("id_doctor", $id_doctor)
+            ->where("estado","PENDIENTE")
             ->get()->first();
         if ($existe_cita) {
             $estado = "OCUPADO";
@@ -103,6 +104,7 @@ class DoctorHorario extends Model
             $existe_cita = CitaMedica::where("fecha_cita", $fecha)
                 ->where("hora", $nueva_hora)
                 ->where("id_doctor", $id_doctor)
+                ->where("estado","PENDIENTE")
                 ->get()->first();
             if ($existe_cita) {
                 $estado = "OCUPADO";
