@@ -119,7 +119,7 @@ class CitaMedicaController extends Controller
 
     public function store(Request $request)
     {
-        $validacion = array('fecha_cita' => 'required', 'hora' => 'required');
+        $validacion = array('fecha_cita' => 'required', 'prioridad' => "required", 'hora' => 'required');
 
         if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("administrador") || auth()->user()->hasRole("secretaria")) {
             $validacion["id_persona"] = "required";
@@ -170,6 +170,7 @@ class CitaMedicaController extends Controller
         $s->id_especialidad = $id_especialidad;
         $s->id_doctor = $id_doctor;
         $s->fecha_cita = $request->fecha_cita;
+        $s->prioridad = $request->prioridad;
         $s->hora = $hora;
         $s->email_enviado = 0;
         $s->state = 1;
@@ -291,6 +292,7 @@ class CitaMedicaController extends Controller
         $s->id_doctor = $id_doctor;
         $s->id_especialidad = $id_especialidad;
         $s->fecha_cita = $request->fecha_cita;
+        $s->prioridad = $request->prioridad;
         $s->hora = $hora;
         $s->email_enviado = 0;
         $s->state = 1;
@@ -355,7 +357,7 @@ class CitaMedicaController extends Controller
             $mensaje .= "\nHora: " . date("H:i", strtotime($cita->hora));
             $mensaje .= "\nEstado: Cancelado";
             $mensaje .= "\nSu cita fue cancelado por motivos de emergencia por favor registre su nueva cita por nuestra plataforma, Mil disculpas por la molestia y esperamos su comprensión";
-            
+
             BotTelegram::send("sendMessage", [
                 'chat_id' => $pt->chat_id,
                 'remove_keyboard' => false,

@@ -109,6 +109,23 @@
                                     <!-- end col-2 -->
 
                                     <div class="app-form-group form-group col-md-12">
+                                        <label class="app-label"><span>*</span> Prioridad:</label>
+                                        <div class="div-create-prioridad">
+                                            <select name="prioridad" id="prioridad" class="form-control chosen-select"
+                                                data-rel="chosen" placeholder="Seleccionar" requiredd>
+                                                <option value="">Seleccionar</option>
+                                                <option value="CONSULTA" <?php echo $cita_medica->prioridad == 'CONSULTA' ? 'selected' : ''; ?>>CONSULTA</option>
+                                                <option value="CONTROL" <?php echo $cita_medica->prioridad == 'CONTROL' ? 'selected' : ''; ?>>CONTROL</option>
+                                                <option value="RECONSULTA" <?php echo $cita_medica->prioridad == 'RECONSULTA' ? 'selected' : ''; ?>>RECONSULTA</option>
+                                                <option value="EMERGENCIA" <?php echo $cita_medica->prioridad == 'EMERGENCIA' ? 'selected' : ''; ?>>EMERGENCIA</option>
+                                            </select>
+                                        </div>
+                                        @if ($errors->has('prioridad'))
+                                            <div class="app-alert alert alert-danger">El campo es requerido</div>
+                                        @endif
+                                    </div>
+
+                                    <div class="app-form-group form-group col-md-12">
                                         <label class="app-label"><span>*</span> Fecha de la cita:</label>
                                         <div class="div-create-id_especialidad">
                                             <?php $fecha = !empty(old('fecha')) ? old('fecha') : $cita_medica->fecha_cita; ?>
@@ -118,7 +135,8 @@
                                         @if ($errors->has('fecha_cita'))
                                             <div class="app-alert alert alert-danger">El campo es requerido</div>
                                         @endif
-                                        <div class="app-alert alert alert-danger" style="display:none" id="alert-fecha">El
+                                        <div class="app-alert alert alert-danger" style="display:none" id="alert-fecha">
+                                            El
                                             campo es requerido para mostrar horas</div>
                                     </div>
                                     <div class="app-form-group form-group col-md-12">

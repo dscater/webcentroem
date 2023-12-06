@@ -231,7 +231,8 @@ if (!empty($persona->foto)) {
                     @endif
 
                     @if (auth()->user()->hasRole('administrador') ||
-                            auth()->user()->hasRole('secretaria'))
+                            auth()->user()->hasRole('secretaria') ||
+                            auth()->user()->hasRole('doctor'))
                         <li id="menu-administracion-factura" class="has-sub">
                             <a href="javascript:;">
                                 <b class="caret pull-right"></b>
@@ -272,6 +273,11 @@ if (!empty($persona->foto)) {
                             </ul>
                         </li>
                     @endif
+                    @if (auth()->user()->hasRole('administrador'))
+                        <li id=""><a href="{{ route('conceptos.index') }}">
+                                <i class="fa fa-list"></i>
+                                Conceptos</a></li>
+                    @endif
 
                     @if (auth()->user()->hasRole('paciente'))
                         <li id=""><a href="{{ url('paciente-datos-registro') }}" target="blank">Datos de
@@ -293,6 +299,9 @@ if (!empty($persona->foto)) {
                     @if (Auth::user()->roles->first()->name == 'DOCTOR')
                         <li id="menu-cita-medico-nuevo"><a
                                 href="{{ route('doctor_horarios.show', Auth::user()->id) }}">Gestionar Horarios</a>
+                        </li>
+                        <li id="menu-cita-medico-nuevo"><a
+                                href="{{ route('calendario_atencions.show', Auth::user()->id) }}">Calendario de atención</a>
                         </li>
                     @endif
                     <!-- begin sidebar minify button -->

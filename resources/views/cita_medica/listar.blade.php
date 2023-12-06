@@ -24,6 +24,23 @@ use App\Helpers\FuncionesComunes;
             background: rgb(253, 245, 0) !important;
             color: black;
         }
+
+
+        .emergencia {
+            background: rgb(218, 28, 28) !important;
+            color: white;
+        }
+
+        .consulta,
+        .control {
+            background: rgb(0, 135, 27) !important;
+            color: white;
+        }
+
+        .reconsulta {
+            background: rgb(253, 245, 0) !important;
+            color: black;
+        }
     </style>
 @endsection
 
@@ -81,17 +98,18 @@ use App\Helpers\FuncionesComunes;
                     </div>
                 </div>
                 <!--div class="alert alert-warning fade in">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
-                            </div-->
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
+                                </div-->
                 <div class="panel-body">
                     <table id="data-table" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>Expandir</th>
                                 <th id="th-id">Código</th>
+                                <th id="th-id">Prioridad</th>
                                 <th id="th-id">Estado</th>
                                 <th id="th-id">C.I.</th>
                                 <th id="th-id">Nombre Completo</th>
@@ -109,6 +127,8 @@ use App\Helpers\FuncionesComunes;
                                     <tr class="" id="tabla-tr-1">
                                         <td></td>
                                         <td>{{ $value->id }}</td>
+                                        <td class="{{ mb_strtolower(str_replace(' ', '_', $value->prioridad)) }}">
+                                            {{ $value->prioridad }}</td>
                                         <td class="{{ mb_strtolower(str_replace(' ', '_', $value->estado)) }}">
                                             {{ $value->estado }}</td>
                                         <td>{{ $value->ci }}</td>
@@ -149,10 +169,8 @@ use App\Helpers\FuncionesComunes;
                                                         Cita</Button>
                                                 @endif
                                             @endif
-                                            @if (
-                                                !auth()->user()->hasRole('paciente') &&
-                                                    !auth()->user()->hasRole('doctor'))
-                                                <a class="btn btn-xs btn-info"
+                                            @if (!auth()->user()->hasRole('paciente'))
+                                                <a class="btn btn-xs btn-info bg-blue"
                                                     href="{{ url('/factura-nuevo') }}?nrop={{ $value->id_paciente }}"
                                                     title=""><span class="fa fa-money"></span> Nuevo Pago</a>
                                             @endif

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Concepto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -87,8 +88,12 @@ class FacturaController extends Controller
     public function create()
     {
         $especialidad = \DB::select("SELECT * FROM especialidad where state=1 order by especialidad");
-
-        return view('factura.crear', compact("especialidad"));
+        $id_especialidad = 0;
+        if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("secretaria")) {
+            $persona = Persona::find(\DB::select("SELECT id from persona where id_user=" . auth()->user()->id)[0]->id);
+            $id_especialidad  = $persona->id_especialidad;
+        }
+        return view('factura.crear', compact("especialidad", "id_especialidad"));
     }
 
     public function store(Request $request)
@@ -98,7 +103,8 @@ class FacturaController extends Controller
             "fecha_factura" => "required|date",
             "paciente_ci" => "required",
             "paciente_nombre" => "required",
-            "concepto" => "required|max:300",
+            "concepto_id" => "required",
+            // "concepto" => "required|max:300",
             "monto" => "required|numeric",
         ];
 
@@ -144,8 +150,18 @@ class FacturaController extends Controller
             $s->fecha_limite_emision = $configuracion->fecha_limite_emision;
             $s->codigo_control = FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr();
             $s->paciente_nombre = strtoupper(trim($request->paciente_nombre));
-            $s->concepto = strtoupper(trim($request->concepto));
-            $s->monto = $request->monto;
+            $s->concepto_id = $request->concepto_id;
+            $o_concepto = Concepto::find($request->concepto_id);
+            $s->concepto = strtoupper(trim($o_concepto->nombre));
+            if (auth()->user()->hasRole("doctor")) {
+                $s->monto = $request->monto;
+                $s->descuento = $request->descuento;
+                $s->monto_total = (float)$request->monto - (float)$request->descuento;
+            } else {
+                $s->monto = $request->monto;
+                $s->descuento = 0;
+                $s->monto_total = $request->monto;
+            }
             $s->state = 1;
 
             $s->save();
@@ -193,9 +209,6 @@ class FacturaController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
-
-
 
         $id_especialidad = \DB::select("SELECT id_especialidad from persona where id_user=" . auth()->user()->id)[0]->id_especialidad;
 

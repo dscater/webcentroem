@@ -99,7 +99,7 @@ class ReporteFacturas extends \FPDF
                     utf8_decode(date("d-m-Y", strtotime($value->fecha_factura))),
                     utf8_decode($value->paciente_ci),
                     utf8_decode($value->paciente_nombre . ($value->tipo_paciente == 'PACIENTE ASEGURADO' ? ($value->institucion != '' ? ' - "' . $value->institucion . '"' : '') : '')),
-                    utf8_decode($value->monto),
+                    utf8_decode($value->monto_total),
                 );
                 $this->Ln(1);
                 $this->Row($fila, 3, 3, 0);
@@ -127,7 +127,7 @@ class ReporteFacturas extends \FPDF
         $this->Row($fila, 3, 3, 0);
 
 
-        $nombre = time() . "_usuarios" . '.pdf';
+        $nombre = time() . "_pagos" . '.pdf';
         if ($data->tipo == "I")
             $this->Output($nombre, 'I');
         else if ($data->tipo == "D")

@@ -63,7 +63,6 @@
                                                     class="form-control chosen-select" data-rel="chosen"
                                                     placeholder="Seleccionar" required>
                                                     <option value="">Seleccionar</option>
-                                                    <option value="todos">Todos</option>
                                                     @if (!empty($especialidad))
                                                         @foreach ($especialidad as $key => $value)
                                                             <option value="{{ $value->id }}" <?php echo $value->id == old('id_especialidad') ? 'selected' : ''; ?>>
@@ -76,6 +75,9 @@
                                                 <div class="app-alert alert alert-danger">El campo es requerido</div>
                                             @endif
                                         </div>
+                                    @else
+                                        <input type="hidden" id="id_especialidad_create_factura"
+                                            value={{ $id_especialidad }}>
                                     @endif
                                 </div>
                                 <div class="col-md-12">
@@ -133,7 +135,7 @@
                                         </div>
                                     </div>
                                     <!-- begin col-2 -->
-                                    <div class="form-group col-md-8">
+                                    <div class="form-group col-md-4">
                                         <label class="app-label paciente_nombre"><span>*</span> A nombre de:</label>
                                         <div class="div-create-paciente_nombre">
                                             <input name="paciente_nombre"
@@ -149,32 +151,62 @@
                                     </div>
                                     <!-- begin col-2 -->
                                     <div class="form-group col-md-4">
+                                        <label class="app-label concepto"><span>*</span> Concepto:</label>
+                                        <div class="div-create-concepto">
+                                            <select name="concepto_id" id="concepto_id" class="form-control"></select>
+                                            @if ($errors->has('concepto_id'))
+                                                <div class="app-alert alert alert-danger">
+                                                    {{ $errors->first('concepto_id') }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <!-- begin col-2 -->
+                                    <div class="form-group col-md-4">
                                         <label class="app-label monto"><span>*</span> Monto:</label>
                                         <div class="div-create-monto">
                                             <input name="monto" value="{{ old('monto') }}"
                                                 class="app-form-control form-control  fadeInLeft animated"
-                                                id="input-monto" type="text" required>
+                                                id="input-monto" type="text" required readonly>
                                             @if ($errors->has('monto'))
                                                 <div class="app-alert alert alert-danger">{{ $errors->first('monto') }}
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
-
                                     <!-- begin col-2 -->
-                                    <div class="form-group col-md-12">
-                                        <label class="app-label concepto"><span>*</span> Concepto:</label>
-                                        <div class="div-create-concepto">
-                                            <input name="concepto" value="{{ old('concepto') }}"
+                                    @if (auth()->user()->hasRole('doctor'))
+                                        <div class="form-group col-md-4">
+                                            <label class="app-label descuento"><span>*</span> Descuento:</label>
+                                            <div class="div-create-descuento">
+                                                <input name="descuento"
+                                                    value="{{ old('descuento') ? old('descuento') : '0' }}"
+                                                    class="app-form-control form-control  fadeInLeft animated"
+                                                    id="input-descuento" type="text" required>
+                                                @if ($errors->has('descuento'))
+                                                    <div class="app-alert alert alert-danger">
+                                                        {{ $errors->first('descuento') }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @else
+                                        <input type="hidden" id="input-descuento" value="0">
+                                    @endif
+                                    <!-- begin col-2 -->
+                                    <div class="form-group col-md-4">
+                                        <label class="app-label monto_total"><span>*</span> Monto total:</label>
+                                        <div class="div-create-monto-total">
+                                            <input name="monto_total" value="{{ old('monto_total') }}"
                                                 class="app-form-control form-control  fadeInLeft animated"
-                                                id="input-concepto" type="text" required>
-                                            @if ($errors->has('concepto'))
-                                                <div class="app-alert alert alert-danger">{{ $errors->first('concepto') }}
+                                                id="input-monto-total" type="text" required readonly>
+                                            @if ($errors->has('monto_total'))
+                                                <div class="app-alert alert alert-danger">
+                                                    {{ $errors->first('monto_total') }}
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
-
 
                                 </div>
                             </div>
@@ -188,9 +220,22 @@
 
 @section('script_3')
     <script>
+        let id_especialidad_create_factura = $("#id_especialidad_create_factura");
+        let concepto_id = $("#concepto_id");
+        let input_monto = $("#input-monto");
+        let input_descuento = $("#input-descuento");
+        let input_monto_total = $("#input-monto-total");
+
         let tipo_paciente = $("#tipo_paciente");
         let institucion = $("#institucion");
         $('document').ready(function() {
+            getConceptosEspecialidad();
+
+            id_especialidad_create_factura.change(getConceptosEspecialidad);
+            concepto_id.change(getConcepto);
+            input_monto.on("keyup change", calculaMontoTotal);
+            input_descuento.on("keyup change", calculaMontoTotal);
+
             institucion.parents(".institucion").hide();
             $("#menu-administracion-factura").addClass("active");
             $("#menu-factura-nuevo").addClass("active");
@@ -205,5 +250,55 @@
                 }
             });
         });
+
+        function calculaMontoTotal() {
+            if (input_monto.val().trim() != '' && input_descuento.val().trim() != '' && parseFloat(input_monto.val()) > 0 &&
+                parseFloat(input_descuento.val()) >= 0) {
+                let total = parseFloat(input_monto.val()) - parseFloat(input_descuento.val());
+                input_monto_total.val(total.toFixed(2));
+            } else {
+                input_monto_total.val(0);
+            }
+        }
+
+        function getConceptosEspecialidad() {
+            if (id_especialidad_create_factura.val().trim() != '') {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('conceptos.por_especialidad') }}",
+                    data: {
+                        id: id_especialidad_create_factura.val(),
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        concepto_id.html(response.html);
+                        getConcepto();
+                    }
+                });
+            } else {
+                concepto_id.html(`<option value="">SIN REGISTROS</option>`);
+            }
+        }
+
+        function getConcepto() {
+            if (concepto_id.val() != '') {
+                let url = `{{ route('conceptos.get_concepto') }}`;
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: {
+                        id: concepto_id.val(),
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        input_monto.val(response.concepto.costo);
+                        calculaMontoTotal();
+                    }
+                });
+            } else {
+                input_monto.val("");
+                calculaMontoTotal();
+            }
+        }
     </script>
 @endsection

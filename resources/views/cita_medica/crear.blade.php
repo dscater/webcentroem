@@ -107,6 +107,23 @@
                                     <!-- end col-2 -->
 
                                     <div class="app-form-group form-group col-md-12">
+                                        <label class="app-label"><span>*</span> Prioridad:</label>
+                                        <div class="div-create-prioridad">
+                                            <select name="prioridad" id="prioridad" class="form-control chosen-select"
+                                                data-rel="chosen" placeholder="Seleccionar" requiredd>
+                                                <option value="">Seleccionar</option>
+                                                <option value="CONSULTA">CONSULTA</option>
+                                                <option value="CONTROL">CONTROL</option>
+                                                <option value="RECONSULTA">RECONSULTA</option>
+                                                <option value="EMERGENCIA">EMERGENCIA</option>
+                                            </select>
+                                        </div>
+                                        @if ($errors->has('prioridad'))
+                                            <div class="app-alert alert alert-danger">El campo es requerido</div>
+                                        @endif
+                                    </div>
+
+                                    <div class="app-form-group form-group col-md-12">
                                         <label class="app-label"><span>*</span> Fecha de la cita:</label>
                                         <div class="div-create-id_especialidad">
                                             <input type="date" name="fecha_cita" id="fecha_cita" class="form-control">
@@ -114,7 +131,8 @@
                                         @if ($errors->has('fecha_cita'))
                                             <div class="app-alert alert alert-danger">El campo es requerido</div>
                                         @endif
-                                        <div class="app-alert alert alert-danger" style="display:none" id="alert-fecha">El
+                                        <div class="app-alert alert alert-danger" style="display:none" id="alert-fecha">
+                                            El
                                             campo es requerido para mostrar horas</div>
                                         <div class="app-alert alert alert-danger" style="display:none"
                                             id="alert-fecha-error">La fecha no es valida, debe ser una fecha igual o mayor

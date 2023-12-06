@@ -133,7 +133,7 @@
                                         </div>
                                     </div>
                                     <!-- begin col-2 -->
-                                    <div class="form-group col-md-8">
+                                    <div class="form-group col-md-4">
                                         <label class="app-label paciente_nombre"><span>*</span> A nombre de:</label>
                                         <div class="div-create-paciente_nombre">
                                             <input name="paciente_nombre"
@@ -157,6 +157,36 @@
                                                 id="input-monto" type="text" required disabled>
                                             @if ($errors->has('monto'))
                                                 <div class="app-alert alert alert-danger">{{ $errors->first('monto') }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- begin col-2 -->
+                                    <div class="form-group col-md-4">
+                                        <label class="app-label descuento"><span>*</span> Descuento:</label>
+                                        <div class="div-create-descuento">
+                                            <input name="descuento"
+                                                value="{{ !empty(old('descuento')) ? old('descuento') : $factura->descuento }}"
+                                                class="app-form-control form-control  fadeInLeft animated"
+                                                id="input-descuento" type="text" required disabled>
+                                            @if ($errors->has('descuento'))
+                                                <div class="app-alert alert alert-danger">{{ $errors->first('descuento') }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <!-- begin col-2 -->
+                                    <div class="form-group col-md-4">
+                                        <label class="app-label monto_total"><span>*</span> Monto Total:</label>
+                                        <div class="div-create-monto_total">
+                                            <input name="monto_total"
+                                                value="{{ !empty(old('monto_total')) ? old('monto_total') : $factura->monto_total }}"
+                                                class="app-form-control form-control  fadeInLeft animated"
+                                                id="input-monto_total" type="text" required disabled>
+                                            @if ($errors->has('monto_total'))
+                                                <div class="app-alert alert alert-danger">{{ $errors->first('monto_total') }}
                                                 </div>
                                             @endif
                                         </div>

@@ -104,6 +104,7 @@ class ReporteFactura extends \FPDF
         $this->Ln(1);
 
 
+        // $this->MultiCell(67, 4, utf8_decode("POR CONCEPTO: "), 0,  "L");
         $this->MultiCell(67, 4, utf8_decode("POR CONCEPTO: " . $this->factura->concepto), 0,  "L");
         $this->Ln(1);
         for ($i = $this->GetX(); $i < 72; $i = $i + 1.7) {
@@ -111,6 +112,10 @@ class ReporteFactura extends \FPDF
         }
         $this->Ln(1);
         $this->Cell(67, 4, utf8_decode("MONTO: Bs. " . number_format($this->factura->monto, 2, ",", "")), 0, 1, "L");
+        $this->Ln(1);
+        $this->Cell(67, 4, utf8_decode("DESCUENTO: Bs. " . number_format($this->factura->descuento, 2, ",", "")), 0, 1, "L");
+        $this->Ln(1);
+        $this->Cell(67, 4, utf8_decode("MONTO TOTAL: Bs. " . number_format($this->factura->monto_total, 2, ",", "")), 0, 1, "L");
         $this->Ln(1);
         for ($i = $this->GetX(); $i < 72; $i = $i + 1.7) {
             $this->Line($i, $this->GetY(), $i + 1, $this->GetY());

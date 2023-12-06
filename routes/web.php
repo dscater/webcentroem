@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/generate-cod', 'AngularController@index');
+// Route::get('/generate-cod', 'AngularController@index');
 
 /*Route::get('/', function () {
     return redirect('/login');
@@ -94,8 +94,8 @@ Route::get("admin-usuario-form-buscar", "UsuarioAdminController@formularioBuscar
 
 Route::post("admin-usuario-buscar-por-carnet", "UsuarioAdminController@buscarByCarnet");
 
-Route::get("persona-reporte", "PersonaReporteController@reporteListado");
-Route::get("persona-reporte/{id_persona}", "PersonaReporteController@reporte");
+// Route::get("persona-reporte", "PersonaReporteController@reporteListado");
+// Route::get("persona-reporte/{id_persona}", "PersonaReporteController@reporte");
 
 Route::get("roles-reporte/{id_rol}", "ReportePermisosPorRolController@reporte");
 Route::get("usuario-reporte/{id_usuario}", "ReporteRolesYPermisosPorUsuarioController@reporte");
@@ -260,6 +260,16 @@ Route::get("test-exp-numeros", function () {
     $int = (int) filter_var($string, FILTER_SANITIZE_NUMBER_INT);
     echo ("The extracted numbers are: $int \n");
 });
+
+// CONCEPTOS
+Route::get("/conceptos/get_concepto", "ConceptoController@get_concepto")->name("conceptos.get_concepto");
+Route::get("/conceptos/por_especialidad", "ConceptoController@por_especialidad")->name("conceptos.por_especialidad");
+Route::resource("conceptos", "ConceptoController");
+
+// CALENDARIO ATENCIONS
+Route::get("/calendario_atencions/{usuario}", "CalendarioAtencionController@show")->name("calendario_atencions.show");
+Route::post("/calendario_atencions/{usuario}", "CalendarioAtencionController@store")->name("calendario_atencions.store");
+Route::delete("/calendario_atencions/{calendario_atencion}", "CalendarioAtencionController@destroy")->name("calendario_atencions.destroy");
 
 // BOT TELEGRAM
 Route::post("/bot_telegram", "BotTelegramController@index");

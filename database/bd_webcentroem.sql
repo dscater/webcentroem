@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 22-11-2023 a las 22:33:39
+-- Tiempo de generación: 06-12-2023 a las 21:59:23
 -- Versión del servidor: 8.0.30
--- Versión de PHP: 7.4.19
+-- Versión de PHP: 7.3.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -51,6 +51,28 @@ INSERT INTO `bot_telegrams` (`id`, `chat_id`, `comando`, `valor`, `estado`, `cre
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `calendario_atencions`
+--
+
+CREATE TABLE `calendario_atencions` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `fecha_ini` date NOT NULL,
+  `fecha_fin` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `calendario_atencions`
+--
+
+INSERT INTO `calendario_atencions` (`id`, `user_id`, `fecha_ini`, `fecha_fin`, `created_at`, `updated_at`) VALUES
+(3, 16, '2023-12-20', '2023-12-25', '2023-12-06 21:42:52', '2023-12-06 21:42:52');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `cita_medica`
 --
 
@@ -62,6 +84,7 @@ CREATE TABLE `cita_medica` (
   `fecha_cita` date NOT NULL,
   `hora` time NOT NULL,
   `estado` enum('PENDIENTE','ATENDIDO','NO ATENDIDO','CANCELADO') CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'PENDIENTE',
+  `prioridad` varchar(255) NOT NULL DEFAULT 'CONSULTA',
   `state` tinyint(1) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -72,14 +95,15 @@ CREATE TABLE `cita_medica` (
 -- Volcado de datos para la tabla `cita_medica`
 --
 
-INSERT INTO `cita_medica` (`id`, `id_paciente`, `id_especialidad`, `id_doctor`, `fecha_cita`, `hora`, `estado`, `state`, `created_at`, `updated_at`, `email_enviado`) VALUES
-(1, 28, 2, 16, '2023-05-24', '08:00:00', 'ATENDIDO', 1, '2023-05-22 20:34:51', '2023-11-01 11:23:21', 1),
-(2, 42, 2, 16, '2023-05-24', '14:00:00', 'CANCELADO', 1, '2023-05-23 11:42:50', '2023-11-22 15:34:43', 1),
-(3, 29, 2, 16, '2023-09-01', '08:15:00', 'NO ATENDIDO', 1, '2023-08-31 12:41:32', '2023-10-06 10:05:24', 1),
-(4, 30, 2, 16, '2023-09-01', '09:00:00', 'NO ATENDIDO', 1, '2023-08-31 12:51:17', '2023-10-06 10:05:24', 1),
-(5, 28, 1, 9, '2023-09-01', '08:00:00', 'NO ATENDIDO', 1, '2023-08-31 13:23:28', '2023-10-06 10:05:24', 1),
-(6, 34, 1, 9, '2023-09-01', '08:15:00', 'NO ATENDIDO', 1, '2023-08-31 17:18:49', '2023-10-06 10:05:24', 0),
-(7, 29, 2, 10, '2023-11-23', '08:00:00', 'PENDIENTE', 1, '2023-11-22 18:13:22', '2023-11-22 18:30:02', 0);
+INSERT INTO `cita_medica` (`id`, `id_paciente`, `id_especialidad`, `id_doctor`, `fecha_cita`, `hora`, `estado`, `prioridad`, `state`, `created_at`, `updated_at`, `email_enviado`) VALUES
+(1, 28, 2, 16, '2023-05-24', '08:00:00', 'ATENDIDO', 'CONSULTA', 1, '2023-05-22 20:34:51', '2023-11-01 11:23:21', 1),
+(2, 42, 2, 16, '2023-05-24', '14:00:00', 'CANCELADO', 'CONSULTA', 1, '2023-05-23 11:42:50', '2023-11-22 15:34:43', 1),
+(3, 29, 2, 16, '2023-09-01', '08:15:00', 'NO ATENDIDO', 'CONSULTA', 1, '2023-08-31 12:41:32', '2023-10-06 10:05:24', 1),
+(4, 30, 2, 16, '2023-09-01', '09:00:00', 'NO ATENDIDO', 'CONSULTA', 1, '2023-08-31 12:51:17', '2023-10-06 10:05:24', 1),
+(5, 28, 1, 9, '2023-09-01', '08:00:00', 'NO ATENDIDO', 'CONSULTA', 1, '2023-08-31 13:23:28', '2023-10-06 10:05:24', 1),
+(6, 34, 1, 9, '2023-09-01', '08:15:00', 'NO ATENDIDO', 'CONSULTA', 1, '2023-08-31 17:18:49', '2023-10-06 10:05:24', 0),
+(7, 29, 2, 10, '2023-11-23', '08:00:00', 'NO ATENDIDO', 'CONSULTA', 1, '2023-11-22 18:13:22', '2023-12-06 11:09:54', 0),
+(8, 28, 2, 16, '2023-12-07', '09:40:00', 'PENDIENTE', 'RECONSULTA', 1, '2023-12-06 17:44:33', '2023-12-06 17:48:21', 0);
 
 -- --------------------------------------------------------
 
@@ -112,6 +136,31 @@ INSERT INTO `codigo_usuario` (`id`, `codigo`, `id_role`) VALUES
 (19, 20003, 2),
 (20, 30002, 3),
 (21, 20004, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `conceptos`
+--
+
+CREATE TABLE `conceptos` (
+  `id` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `costo` decimal(24,2) NOT NULL,
+  `id_especialidad` bigint UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `conceptos`
+--
+
+INSERT INTO `conceptos` (`id`, `nombre`, `costo`, `id_especialidad`, `created_at`, `updated_at`) VALUES
+(1, 'CONCEPTO #1', 200.00, 2, '2023-12-06 15:36:10', '2023-12-06 15:55:19'),
+(2, 'CONCEPTO HUESOS', 340.00, 1, '2023-12-06 15:58:26', '2023-12-06 15:58:26'),
+(3, 'CONCEPTO #2', 250.00, 2, '2023-12-06 15:59:12', '2023-12-06 15:59:12'),
+(4, 'CONCEPTO HUESOS #2', 500.00, 1, '2023-12-06 15:59:27', '2023-12-06 15:59:27');
 
 -- --------------------------------------------------------
 
@@ -232,8 +281,11 @@ CREATE TABLE `factura` (
   `paciente_ci` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `fecha_factura` date NOT NULL,
   `nro_factura` int NOT NULL,
+  `concepto_id` bigint UNSIGNED DEFAULT NULL,
   `concepto` varchar(300) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `monto` decimal(10,2) NOT NULL,
+  `descuento` decimal(24,2) NOT NULL DEFAULT '0.00',
+  `monto_total` decimal(24,2) NOT NULL,
   `state` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL
@@ -243,22 +295,26 @@ CREATE TABLE `factura` (
 -- Volcado de datos para la tabla `factura`
 --
 
-INSERT INTO `factura` (`id`, `id_paciente`, `tipo_paciente`, `institucion`, `id_especialidad`, `numero_autorizacion`, `codigo_control`, `fecha_limite_emision`, `paciente_nombre`, `paciente_ci`, `fecha_factura`, `nro_factura`, `concepto`, `monto`, `state`, `created_at`, `updated_at`) VALUES
-(2, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', 'Q8-03-11-J3-32', '2022-04-23', 'OCHOA', '9215936', '2021-09-05', 1, 'CONSULTA', 1000.00, 1, '2021-09-05 18:31:29', '2021-09-05 14:31:41'),
-(3, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '96-G3-K5-E1-19', '2022-04-23', 'PERES', '2323', '2023-05-23', 2, 'PRUEBA FACTURA POR 2000 BS', 2000.00, 1, '2023-05-23 19:16:20', '2023-05-23 15:16:20'),
-(4, NULL, 'PACIENTE ASEGURADO', NULL, 2, '7845126', '44-G4-K8-T6-C9', '2022-04-23', 'MAMANI', '3223', '2023-05-23', 3, 'PRUEBA PACIENTE ASEGURADO', 3000.00, 1, '2023-05-23 19:22:03', '2023-05-23 15:22:03'),
-(5, NULL, 'PACIENTE ASEGURADO', 'INSTITUCION PRUEBA', 2, '7845126', '81-D7-B2-83-R0', '2022-04-23', 'GUTIERREZ MAMANI PAMELA', '3333', '2023-08-31', 4, 'CONCEPTO PRUEBA', 1000.00, 1, '2023-08-31 15:46:26', '2023-08-31 11:46:26'),
-(6, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'P5-30-08-68-03', '2022-04-23', 'JUAN PERES', '444', '2023-11-07', 5, 'PAGO DE PRUEBA', 100.00, 1, '2023-11-07 15:39:27', '2023-11-07 11:39:27'),
-(7, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', 'M1-Y0-H1-33-A5', '2022-04-23', 'JUAN PERES', '1111', '2023-11-07', 6, 'CONCEPTO PRUEBA #2', 50.00, 1, '2023-11-07 15:40:25', '2023-11-07 11:40:25'),
-(8, NULL, 'PACIENTE ASEGURADO', 'S.A', 1, '7845126', 'V6-51-02-08-80', '2022-04-23', 'PERES PERES LIMBER', '1414145', '2023-11-07', 7, 'CONCEPTO #3', 100.00, 1, '2023-11-07 15:40:58', '2023-11-07 11:40:58'),
-(9, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'C3-67-81-S8-15', '2022-04-23', 'JUAN PERES', '22222', '2023-11-07', 8, 'PAGO #1', 80.00, 1, '2023-11-07 17:49:21', '2023-11-07 13:49:21'),
-(10, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '70-D6-88-Z8-13', '2022-04-23', 'JUAN PERES', '12', '2023-11-07', 9, 'ASD', 30.00, 1, '2023-11-07 17:50:29', '2023-11-07 13:50:29'),
-(11, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', '74-P9-09-F0-68', '2022-04-23', 'JUAN PERES', '123', '2023-11-07', 10, 'PRUEBA NUEVOA', 150.00, 1, '2023-11-07 17:57:51', '2023-11-07 13:57:51'),
-(12, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '80-R6-64-31-44', '2022-04-23', 'JUAN PERES', '44', '2023-11-07', 11, 'PAGO MUSCULOS', 100.00, 1, '2023-11-07 18:02:00', '2023-11-07 14:02:00'),
-(13, NULL, 'PACIENTE PARTICULAR', NULL, 3, '7845126', '62-79-98-R9-51', '2022-04-23', 'JUAN PERES', '11111', '2023-11-07', 12, 'PAGO RAXOS X', 30.00, 1, '2023-11-07 18:06:28', '2023-11-07 14:06:28'),
-(14, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '38-33-K3-W7-41', '2022-04-23', 'PEDRO MARTINEZ', '3232', '2023-11-07', 13, 'PRUEBA MUSCULOS', 10.00, 1, '2023-11-07 18:06:44', '2023-11-07 14:06:44'),
-(15, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'X3-43-E9-83-G0', '2022-04-23', 'PEDRO MARTINEZ', '34', '2023-11-07', 14, 'PRUEBA SECRETARIA MUSCULOS', 60.00, 1, '2023-11-07 18:07:04', '2023-11-07 14:07:04'),
-(16, NULL, 'PACIENTE PARTICULAR', NULL, 4, '7845126', '76-90-T5-X3-G0', '2022-04-23', 'JUAN PERES', '4343', '2023-11-07', 15, 'PRUEBA OPERACIONES', 9000.00, 1, '2023-11-07 18:08:21', '2023-11-07 14:08:21');
+INSERT INTO `factura` (`id`, `id_paciente`, `tipo_paciente`, `institucion`, `id_especialidad`, `numero_autorizacion`, `codigo_control`, `fecha_limite_emision`, `paciente_nombre`, `paciente_ci`, `fecha_factura`, `nro_factura`, `concepto_id`, `concepto`, `monto`, `descuento`, `monto_total`, `state`, `created_at`, `updated_at`) VALUES
+(2, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', 'Q8-03-11-J3-32', '2022-04-23', 'OCHOA', '9215936', '2021-09-05', 1, NULL, 'CONSULTA', 1000.00, 0.00, 1000.00, 1, '2021-09-05 18:31:29', '2021-09-05 14:31:41'),
+(3, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '96-G3-K5-E1-19', '2022-04-23', 'PERES', '2323', '2023-05-23', 2, NULL, 'PRUEBA FACTURA POR 2000 BS', 2000.00, 0.00, 2000.00, 1, '2023-05-23 19:16:20', '2023-05-23 15:16:20'),
+(4, NULL, 'PACIENTE ASEGURADO', NULL, 2, '7845126', '44-G4-K8-T6-C9', '2022-04-23', 'MAMANI', '3223', '2023-05-23', 3, NULL, 'PRUEBA PACIENTE ASEGURADO', 3000.00, 0.00, 3000.00, 1, '2023-05-23 19:22:03', '2023-05-23 15:22:03'),
+(5, NULL, 'PACIENTE ASEGURADO', 'INSTITUCION PRUEBA', 2, '7845126', '81-D7-B2-83-R0', '2022-04-23', 'GUTIERREZ MAMANI PAMELA', '3333', '2023-08-31', 4, NULL, 'CONCEPTO PRUEBA', 1000.00, 0.00, 1000.00, 1, '2023-08-31 15:46:26', '2023-08-31 11:46:26'),
+(6, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'P5-30-08-68-03', '2022-04-23', 'JUAN PERES', '444', '2023-11-07', 5, NULL, 'PAGO DE PRUEBA', 100.00, 0.00, 100.00, 1, '2023-11-07 15:39:27', '2023-11-07 11:39:27'),
+(7, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', 'M1-Y0-H1-33-A5', '2022-04-23', 'JUAN PERES', '1111', '2023-11-07', 6, NULL, 'CONCEPTO PRUEBA #2', 50.00, 0.00, 50.00, 1, '2023-11-07 15:40:25', '2023-11-07 11:40:25'),
+(8, NULL, 'PACIENTE ASEGURADO', 'S.A', 1, '7845126', 'V6-51-02-08-80', '2022-04-23', 'PERES PERES LIMBER', '1414145', '2023-11-07', 7, NULL, 'CONCEPTO #3', 100.00, 0.00, 100.00, 1, '2023-11-07 15:40:58', '2023-11-07 11:40:58'),
+(9, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'C3-67-81-S8-15', '2022-04-23', 'JUAN PERES', '22222', '2023-11-07', 8, NULL, 'PAGO #1', 80.00, 0.00, 80.00, 1, '2023-11-07 17:49:21', '2023-11-07 13:49:21'),
+(10, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '70-D6-88-Z8-13', '2022-04-23', 'JUAN PERES', '12', '2023-11-07', 9, NULL, 'ASD', 30.00, 0.00, 30.00, 1, '2023-11-07 17:50:29', '2023-11-07 13:50:29'),
+(11, NULL, 'PACIENTE PARTICULAR', NULL, 1, '7845126', '74-P9-09-F0-68', '2022-04-23', 'JUAN PERES', '123', '2023-11-07', 10, NULL, 'PRUEBA NUEVOA', 150.00, 0.00, 150.00, 1, '2023-11-07 17:57:51', '2023-11-07 13:57:51'),
+(12, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '80-R6-64-31-44', '2022-04-23', 'JUAN PERES', '44', '2023-11-07', 11, NULL, 'PAGO MUSCULOS', 100.00, 0.00, 100.00, 1, '2023-11-07 18:02:00', '2023-11-07 14:02:00'),
+(13, NULL, 'PACIENTE PARTICULAR', NULL, 3, '7845126', '62-79-98-R9-51', '2022-04-23', 'JUAN PERES', '11111', '2023-11-07', 12, NULL, 'PAGO RAXOS X', 30.00, 0.00, 30.00, 1, '2023-11-07 18:06:28', '2023-11-07 14:06:28'),
+(14, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '38-33-K3-W7-41', '2022-04-23', 'PEDRO MARTINEZ', '3232', '2023-11-07', 13, NULL, 'PRUEBA MUSCULOS', 10.00, 0.00, 10.00, 1, '2023-11-07 18:06:44', '2023-11-07 14:06:44'),
+(15, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'X3-43-E9-83-G0', '2022-04-23', 'PEDRO MARTINEZ', '34', '2023-11-07', 14, NULL, 'PRUEBA SECRETARIA MUSCULOS', 60.00, 0.00, 60.00, 1, '2023-11-07 18:07:04', '2023-11-07 14:07:04'),
+(16, NULL, 'PACIENTE PARTICULAR', NULL, 4, '7845126', '76-90-T5-X3-G0', '2022-04-23', 'JUAN PERES', '4343', '2023-11-07', 15, NULL, 'PRUEBA OPERACIONES', 9000.00, 0.00, 9000.00, 1, '2023-11-07 18:08:21', '2023-11-07 14:08:21'),
+(17, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', '40-54-I9-A6-32', '2022-04-23', 'ALBERTO', '78945612', '2023-12-06', 16, NULL, 'PAGO PRUEBA CON DESCUENTO', 200.00, 20.00, 180.00, 1, '2023-12-06 20:08:12', '2023-12-06 16:08:12'),
+(18, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'C5-83-01-F9-34', '2022-04-23', 'JUAN PERES', '0000', '2023-12-06', 17, NULL, 'PAGO DESDE SECRETARIA', 400.00, 0.00, 400.00, 1, '2023-12-06 20:13:21', '2023-12-06 16:13:21'),
+(19, NULL, 'PACIENTE ASEGURADO', 'SOCIEDAD S.A.', 1, '7845126', 'S8-19-17-00-12', '2022-04-23', 'PERES', '999', '2023-12-06', 18, 4, 'CONCEPTO HUESOS #2', 500.00, 0.00, 500.00, 1, '2023-12-06 21:14:08', '2023-12-06 17:14:08'),
+(20, NULL, 'PACIENTE PARTICULAR', NULL, 2, '7845126', 'U0-D1-Y1-W3-44', '2022-04-23', 'PERES CONCEPTOS', '1111', '2023-12-06', 19, 3, 'CONCEPTO #2', 250.00, 30.00, 220.00, 1, '2023-12-06 21:23:24', '2023-12-06 17:23:24');
 
 -- --------------------------------------------------------
 
@@ -411,7 +467,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (3, '2023_05_23_121319_create_persona_telegrams_table', 2),
 (4, '2023_05_23_121623_create_bot_telegrams_table', 3),
 (5, '2023_05_23_123807_create_telegram_updates_table', 4),
-(6, '2023_05_23_151427_create_recordatorios_table', 5);
+(6, '2023_05_23_151427_create_recordatorios_table', 5),
+(7, '2023_12_06_161938_create_calendario_antecions_table', 6),
+(8, '2023_12_06_162203_create_calendario_atencions_table', 7);
 
 -- --------------------------------------------------------
 
@@ -550,7 +608,8 @@ INSERT INTO `persona` (`id`, `id_user`, `ci`, `paterno`, `materno`, `nombre`, `g
 (40, 24, '123456', 'MENDOZA', 'PAREDES', 'RAFAEL', 'HOMBRE', '1632165006_0 (1).jpg', '2885652', NULL, 'SOLTERO', '1990-05-12', 31, '', 'unetehost@gmail.com', 1, '2021-09-20 19:10:06', '2021-09-20 19:10:06', 'LA PAZ', 1, 'ZONA CENTRAL CALLE 3', 'JUAN MENDOZA', 4),
 (41, 25, '55555', 'MORALES', '', 'JOSE', NULL, '1684855708_user_default.png', '22222', '777777', 'SOLTERO', NULL, NULL, 'LOS OLIVOS', 'jose@webcentroem.com', 1, '2023-05-23 15:28:28', '2023-10-06 10:40:27', NULL, NULL, NULL, NULL, 1),
 (42, 26, '3333', 'GUTIERREZ', 'MAMANI', 'PAMELA', 'MUJER', NULL, '', NULL, '', '1999-03-22', 24, '', 'pamela@gmail.com', 1, '2023-05-23 11:40:24', '2023-08-31 10:51:38', 'LA PAZ', 1, 'LOS OLIVOS', '', 4),
-(43, 27, '6666', 'ALCANTARA', 'MARTINEZ', 'PEDRO', 'HOMBRE', NULL, '222222', NULL, '', '1999-01-01', 24, '', 'pedro@gmail.com', 1, '2023-05-23 11:50:48', '2023-05-23 11:51:16', '', 2, 'LOS OLIVOS', '', 4);
+(43, 27, '6666', 'ALCANTARA', 'MARTINEZ', 'PEDRO', 'HOMBRE', NULL, '222222', NULL, '', '1999-01-01', 24, '', 'pedro@gmail.com', 1, '2023-05-23 11:50:48', '2023-05-23 11:51:16', '', 2, 'LOS OLIVOS', '', 4),
+(44, 28, '9090', 'GONZALES', 'GONZALES', 'ELVIS', 'HOMBRE', NULL, '', NULL, '', '2000-01-01', 23, '', 'elvis@gmail.com', 1, '2023-12-06 17:57:56', '2023-12-06 17:57:56', '', 2, 'LOS OLIVOS', '', 4);
 
 -- --------------------------------------------------------
 
@@ -882,7 +941,8 @@ INSERT INTO `recordatorios` (`id`, `fecha`, `created_at`, `updated_at`) VALUES
 (7, '2023-11-01', '2023-11-01 14:49:23', '2023-11-01 14:49:23'),
 (8, '2023-11-07', '2023-11-07 15:38:58', '2023-11-07 15:38:58'),
 (9, '2023-11-08', '2023-11-08 14:30:22', '2023-11-08 14:30:22'),
-(10, '2023-11-22', '2023-11-22 22:30:37', '2023-11-22 22:30:37');
+(10, '2023-11-22', '2023-11-22 22:30:37', '2023-11-22 22:30:37'),
+(11, '2023-12-06', '2023-12-06 14:42:19', '2023-12-06 14:42:19');
 
 -- --------------------------------------------------------
 
@@ -949,7 +1009,8 @@ INSERT INTO `role_user` (`id`, `role_id`, `user_id`, `state`, `created_at`, `upd
 (44, 4, 24, 1, '2021-09-20', '2021-09-20'),
 (45, 1, 25, 1, '2023-05-23', '2023-05-23'),
 (46, 4, 26, 1, '2023-05-23', '2023-05-23'),
-(47, 4, 27, 1, '2023-05-23', '2023-05-23');
+(47, 4, 27, 1, '2023-05-23', '2023-05-23'),
+(48, 4, 28, 1, '2023-12-06', '2023-12-06');
 
 -- --------------------------------------------------------
 
@@ -1015,7 +1076,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `state`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'melani@gmail.com', '$2y$10$wuTuUildBSgVYfvHomvXWuVLF6T1PWByEZJelnC9LOSQ/Xwcw2N3S', 'WB81xa6ASCz7ZYa5psDqasIIgfDgbqhndiHOQ31axl0ZLYO87dOPour5cVex', 1, '2019-03-04 00:00:00', '2023-10-06 10:40:27'),
+(1, 'admin', 'melani@gmail.com', '$2y$10$wuTuUildBSgVYfvHomvXWuVLF6T1PWByEZJelnC9LOSQ/Xwcw2N3S', 'Tt7bnQQnpO2CdvyJsXnFKrNGQWLXY8eH0eZwJEjZlPmRgIpJc9CbAiA9gpKo', 1, '2019-03-04 00:00:00', '2023-10-06 10:40:27'),
 (7, '10001', 'fulanito@gmail.com', '$2y$10$zilrSbbGImsnexkrngzK2evtBehtlXela/spO86U9wO80VFLtoyia', NULL, 1, '2021-07-09 23:24:36', '2023-10-06 10:40:27'),
 (8, '10002', 'juan@webcentroem.com', '$2y$10$rSWByV/f0UaiYqABvQI7run9bVO2Mbo7D3fgJs1hUdTIKWIutiZgK', NULL, 1, '2021-07-09 23:26:06', '2023-10-06 10:40:27'),
 (9, '20001', 'lucia@webcentroem.com', '$2y$10$2CW7YY.iY0spTEsHeYMWKeoSGo6inwBaviihw6BfSyy3FF3v8fRaS', NULL, 1, '2021-07-09 23:26:44', '2023-10-06 10:40:27'),
@@ -1034,7 +1095,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `state
 (24, 'unetehost@gmail.com', 'unetehost@gmail.com', '$2y$10$D4F3REy/SGWaCsDp75ikAul8wJjth1torQWTgaZXLWh9gJUHAH5Sm', NULL, 1, '2021-09-20 19:10:06', '2021-09-20 19:10:06'),
 (25, '20004', 'jose@webcentroem.com', '$2y$10$RYfsb17OcxCK3jVBdv56D.cJu.l36440dVdXXUS4YnZ71Yqn.ZX5u', NULL, 1, '2023-05-23 15:28:28', '2023-10-06 10:40:27'),
 (26, 'pamela@gmail.com', 'pamela@gmail.com', '$2y$10$wBPzoTNfNFuJbFZBc34oauSub/PP7Zt/f3It17pt5/sFDFx5wwI7y', NULL, 1, '2023-05-23 11:40:24', '2023-05-23 11:40:24'),
-(27, 'pedro@gmail.com', 'pedro@gmail.com', '$2y$10$eNMgu4.bLC9EbuZJFiSrhOEqtDyYskt4cH8b/NFeoeRh8smJAiKRO', NULL, 1, '2023-05-23 11:50:48', '2023-05-23 11:51:16');
+(27, 'pedro@gmail.com', 'pedro@gmail.com', '$2y$10$eNMgu4.bLC9EbuZJFiSrhOEqtDyYskt4cH8b/NFeoeRh8smJAiKRO', NULL, 1, '2023-05-23 11:50:48', '2023-05-23 11:51:16'),
+(28, 'elvis@gmail.com', 'elvis@gmail.com', '$2y$10$VlptPO286C3nbQikzna/5OSP71p6.7KqJJN13NgqKB/uQMWMRpgq2', NULL, 1, '2023-12-06 17:57:56', '2023-12-06 17:57:56');
 
 --
 -- Índices para tablas volcadas
@@ -1047,6 +1109,12 @@ ALTER TABLE `bot_telegrams`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `calendario_atencions`
+--
+ALTER TABLE `calendario_atencions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `cita_medica`
 --
 ALTER TABLE `cita_medica`
@@ -1056,6 +1124,12 @@ ALTER TABLE `cita_medica`
 -- Indices de la tabla `codigo_usuario`
 --
 ALTER TABLE `codigo_usuario`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `conceptos`
+--
+ALTER TABLE `conceptos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1199,16 +1273,28 @@ ALTER TABLE `bot_telegrams`
   MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT de la tabla `calendario_atencions`
+--
+ALTER TABLE `calendario_atencions`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `cita_medica`
 --
 ALTER TABLE `cita_medica`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `codigo_usuario`
 --
 ALTER TABLE `codigo_usuario`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT de la tabla `conceptos`
+--
+ALTER TABLE `conceptos`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `doctor_horarios`
@@ -1226,7 +1312,7 @@ ALTER TABLE `especialidad`
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_clinico`
@@ -1256,7 +1342,7 @@ ALTER TABLE `mes`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `permissions`
@@ -1274,7 +1360,7 @@ ALTER TABLE `permission_role`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'numero_documento,paterno,materno,nombre1,nombre2', AUTO_INCREMENT=44;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT COMMENT 'numero_documento,paterno,materno,nombre1,nombre2', AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT de la tabla `persona_telegrams`
@@ -1292,7 +1378,7 @@ ALTER TABLE `prueba`
 -- AUTO_INCREMENT de la tabla `recordatorios`
 --
 ALTER TABLE `recordatorios`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -1304,7 +1390,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `role_user`
 --
 ALTER TABLE `role_user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `seguimiento`
@@ -1322,7 +1408,7 @@ ALTER TABLE `telegram_updates`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Restricciones para tablas volcadas

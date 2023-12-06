@@ -5,6 +5,7 @@ namespace App;
 use App\Models\CitaMedica;
 use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class DoctorHorario extends Model
 {
@@ -26,38 +27,44 @@ class DoctorHorario extends Model
 
         $horarios = [];
         foreach ($doctor_horarios as $doctor_horario) {
-            $nuevo_horario = [];
-            $inicio_maniana = date("H:i", strtotime($doctor_horario->tm_hora_ini));
-            $fin_maniana = date("H:i", strtotime($doctor_horario->tm_hora_fin));
-            $inicio_tarde = date("H:i", strtotime($doctor_horario->tt_hora_ini));
-            $fin_tarde = date("H:i", strtotime($doctor_horario->tt_hora_fin));
+            // VALIDAR CALENDARIO FECHAS
+            $existe_calendario = CalendarioAtencion::where("user_id", $doctor_horario->user_id)
+                ->where("fecha_ini", "<=", $fecha)
+                ->where("fecha_fin", ">=", $fecha)->get()->first();
+            if (!$existe_calendario) {
+                $nuevo_horario = [];
+                $inicio_maniana = date("H:i", strtotime($doctor_horario->tm_hora_ini));
+                $fin_maniana = date("H:i", strtotime($doctor_horario->tm_hora_fin));
+                $inicio_tarde = date("H:i", strtotime($doctor_horario->tt_hora_ini));
+                $fin_tarde = date("H:i", strtotime($doctor_horario->tt_hora_fin));
 
-            // horario doctor
-            $nuevo_horario = [
-                "nom_doctor" => "Dr(a). " . $doctor_horario->nombre . ' ' . $doctor_horario->paterno . ' ' . $doctor_horario->materno,
-                "maniana" => [],
-                "tarde" => [],
-            ];
+                // horario doctor
+                $nuevo_horario = [
+                    "nom_doctor" => "Dr(a). " . $doctor_horario->nombre . ' ' . $doctor_horario->paterno . ' ' . $doctor_horario->materno,
+                    "maniana" => [],
+                    "tarde" => [],
+                ];
 
-            // intervalo doctor 
-            $intervalo = 15;
-            $ih = IntervaloHorario::where("user_id", $doctor_horario->user_id)->get()->first();
-            if ($ih) {
-                $intervalo = $ih->intervalo ? $ih->intervalo : 15;
-            }
+                // intervalo doctor 
+                $intervalo = 15;
+                $ih = IntervaloHorario::where("user_id", $doctor_horario->user_id)->get()->first();
+                if ($ih) {
+                    $intervalo = $ih->intervalo ? $ih->intervalo : 15;
+                }
 
-            // horarios doctor
-            // turno maniana
-            if ($inicio_maniana != '00:00' && $fin_maniana != '00:00') {
-                $horario_generado = self::generarHorarios($inicio_maniana, $fin_maniana, $intervalo, $doctor_horario->user_id, $fecha);
-                $nuevo_horario["maniana"] = $horario_generado;
+                // horarios doctor
+                // turno maniana
+                if ($inicio_maniana != '00:00' && $fin_maniana != '00:00') {
+                    $horario_generado = self::generarHorarios($inicio_maniana, $fin_maniana, $intervalo, $doctor_horario->user_id, $fecha);
+                    $nuevo_horario["maniana"] = $horario_generado;
+                }
+                // turno tarde
+                if ($inicio_tarde != '00:00' && $fin_tarde != '00:00') {
+                    $horario_generado = self::generarHorarios($inicio_tarde, $fin_tarde, $intervalo, $doctor_horario->user_id, $fecha);
+                    $nuevo_horario["tarde"] = $horario_generado;
+                }
+                $horarios[] = $nuevo_horario;
             }
-            // turno tarde
-            if ($inicio_tarde != '00:00' && $fin_tarde != '00:00') {
-                $horario_generado = self::generarHorarios($inicio_tarde, $fin_tarde, $intervalo, $doctor_horario->user_id, $fecha);
-                $nuevo_horario["tarde"] = $horario_generado;
-            }
-            $horarios[] = $nuevo_horario;
         }
 
         return $horarios;
@@ -79,7 +86,7 @@ class DoctorHorario extends Model
         $existe_cita = CitaMedica::where("fecha_cita", $fecha)
             ->where("hora", $nueva_hora)
             ->where("id_doctor", $id_doctor)
-            ->where("estado","PENDIENTE")
+            ->where("estado", "PENDIENTE")
             ->get()->first();
         if ($existe_cita) {
             $estado = "OCUPADO";
@@ -104,7 +111,7 @@ class DoctorHorario extends Model
             $existe_cita = CitaMedica::where("fecha_cita", $fecha)
                 ->where("hora", $nueva_hora)
                 ->where("id_doctor", $id_doctor)
-                ->where("estado","PENDIENTE")
+                ->where("estado", "PENDIENTE")
                 ->get()->first();
             if ($existe_cita) {
                 $estado = "OCUPADO";
@@ -160,6 +167,6 @@ class DoctorHorario extends Model
 
     public function user()
     {
-        return $this->belongsTo(Usuario::class, 'user_id');
+        return $this->belongsTo(Models\Usuario::class, 'user_id');
     }
 }
