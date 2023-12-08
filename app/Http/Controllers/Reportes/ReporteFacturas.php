@@ -111,7 +111,7 @@ class ReporteFacturas extends \FPDF
                 for ($i = $this->GetX(); $i < 208; $i = $i + 1.7) {
                     $this->Line($i, $this->GetY(), $i + 1, $this->GetY());
                 }
-                $total += (float)$value->monto;
+                $total += (float)$value->monto_total;
             }
         }
         $this->SetFont("Arial", "B", 10);

@@ -126,7 +126,7 @@ class ReporteFactura extends \FPDF
 
 
         $f = new FuncionesComunes();
-        $monto = ucwords(strtolower($f->convertir(number_format($this->factura->monto, 2, ".", ""), $moneda = "Bolivianos")));
+        $monto = ucwords(strtolower($f->convertir(number_format($this->factura->monto_total, 2, ".", ""), $moneda = "Bolivianos")));
         $this->MultiCell(67, 4, utf8_decode("SON: " . $monto), 0, "L");
 
         for ($i = $this->GetX(); $i < 72; $i = $i + 1.7) {
