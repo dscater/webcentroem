@@ -124,8 +124,9 @@ class ReporteFacturas extends \FPDF
             utf8_decode("TOTAL"),
             utf8_decode(number_format($total, 2, ".", "")),
         );
-        $this->Row($fila, 3, 3, 0);
-
+        if (!empty($resultado)) {
+            $this->Row($fila, 3, 3, 0);
+        }
 
         $nombre = time() . "_pagos" . '.pdf';
         if ($data->tipo == "I")

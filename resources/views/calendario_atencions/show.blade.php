@@ -16,6 +16,11 @@
         .panel_nuevo .panel-body {
             padding-top: 0px;
         }
+
+        table.tabla_calendario thead tr th {
+            background: #6E237E!important;
+            color: white!important;
+        }
     </style>
 @endsection
 
@@ -59,7 +64,7 @@
                                     <form class="panel-body"
                                         action="{{ route('calendario_atencions.store', $usuario->id) }}" method="post"
                                         accept-charset="utf-8" id="" enctype="multipart/form-data">
-                                        <h5 class="text-center">NUEVO</h5>
+                                        <h5 class="text-center">NO SE ATENDERÁ EN FECHAS</h5>
                                         {{ csrf_field() }}
                                         <div class="row">
                                             <div class="col-md-6 form-group">
@@ -92,16 +97,19 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <h4 class="w-100 text-center font-md">LISTADO</h4>
+                                <h4 class="w-100 text-center font-md">CALENDARIO - LISTADO</h4>
                             </div>
-                            <div class="col-md-12">
-                                <table class="table table-bordered">
+                            <div class="col-md-12" style="overflow: auto;">
+                                <table class="table table-bordered tabla_calendario">
                                     <thead>
                                         <tr>
-                                            <th>CÓDIGO</th>
+                                            <th style="vertical-align: middle" rowspan="2">CÓDIGO</th>
+                                            <th colspan="2" class="text-center">NO SE ATENDERÁ EN FECHAS</th>
+                                            <th style="vertical-align: middle" rowspan="2">ACCIÓN</th>
+                                        </tr>
+                                        <tr>
                                             <th>FECHA INICIO</th>
                                             <th>FECHA FIN</th>
-                                            <th>ACCIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody>
