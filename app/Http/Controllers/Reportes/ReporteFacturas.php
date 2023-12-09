@@ -105,8 +105,15 @@ class ReporteFacturas extends \FPDF
                 $this->Row($fila, 3, 3, 0);
                 $this->Ln(1);
                 $this->SetX($this->GetX());
-                $this->Cell(25, 5, "Concepto: ", 0, 0, "L");
-                $this->MultiCell(175, 5, utf8_decode($value->concepto), 0, "L");
+                $this->Cell(25, 5, "Concepto(s): ", 0, 0, "L");
+                $this->Ln(1);
+                $this->Ln(1);
+                $this->Ln(1);
+                foreach ($value->factura_conceptos as $fc) {
+                    $this->setX(20);
+                    $this->MultiCell(175, 5, utf8_decode($fc->concepto), 0, "L");
+                    $this->Ln(1);
+                }
                 $this->Ln(1);
                 for ($i = $this->GetX(); $i < 208; $i = $i + 1.7) {
                     $this->Line($i, $this->GetY(), $i + 1, $this->GetY());

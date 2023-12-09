@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FacturaConcepto;
 use Illuminate\Http\Request;
 
 use App\Models\Consultas;
@@ -487,11 +488,14 @@ class ReporteController extends Controller
         if ($tipo_paciente != 'todos') {
             $where .= "and f.tipo_paciente = '" . $tipo_paciente . "'";
         }
-        $data->resultado = \DB::select("SELECT  e.especialidad, f.*
-                                        FROM factura f
-                                        join especialidad e on f.id_especialidad=e.id
-                                        where f.state=1 $where
-                                        order by e.especialidad, f.nro_factura");
+
+        $data->resultado = Factura::select("factura.*")
+            ->join("especialidad", "especialidad.id", "=", "factura.id_especialidad")
+            ->where("factura.state", 1)
+            ->orderBy("especialidad.especialidad", "asc")
+            ->orderBy("nro_factura", "asc")
+            ->get();
+
         $data->tipo = "I";
         $data->tipo_paciente = $tipo_paciente;
         $reporte = new ReporteFacturas();

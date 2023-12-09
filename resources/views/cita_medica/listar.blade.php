@@ -26,18 +26,17 @@ use App\Helpers\FuncionesComunes;
         }
 
 
-        .emergencia {
+        .alta {
             background: rgb(218, 28, 28) !important;
             color: white;
         }
 
-        .consulta,
-        .control {
+        .baja {
             background: rgb(0, 135, 27) !important;
             color: white;
         }
 
-        .reconsulta {
+        .media {
             background: rgb(253, 245, 0) !important;
             color: black;
         }

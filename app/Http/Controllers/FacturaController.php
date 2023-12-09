@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Concepto;
+use App\FacturaConcepto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -39,45 +40,42 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        $where = "";
 
+        $factura = Factura::select("factura.*")
+            ->where("factura.state", 1);
         if (auth()->user()->hasRole("administrador")) {
         } else if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("secretaria")) {
             $id_especialidad = \DB::select("SELECT id_especialidad from persona where id_user=" . auth()->user()->id)[0]->id_especialidad;
-            $where = " and f.id_especialidad=$id_especialidad ";
+            $factura->where("factura.id_especialidad", $id_especialidad);
         }
         // por paciente
         else {
-            $where = " u.id=" . auth()->user()->id;
+            $factura->where("factura.id_paciente",  auth()->user()->id);
         }
 
-        $factura = \DB::select("SELECT f.*
-                        FROM factura f
-                        where f.state=1
-                        $where
-                        order by f.fecha_factura");
+        $factura->orderBy("factura.fecha_factura");
+        $factura = $factura->get();
         return view('factura.listar')->with('factura', $factura);
     }
 
     public function buscarPorFecha($fecha)
     {
-        $where = "";
+
+        $factura = Factura::select("factura.*")
+            ->where("factura.state", 1);
 
         if (auth()->user()->hasRole("administrador")) {
         } else if (auth()->user()->hasRole("doctor") || auth()->user()->hasRole("secretaria")) {
             $id_especialidad = \DB::select("SELECT id_especialidad from persona where id_user=" . auth()->user()->id)[0]->id_especialidad;
-            $where = " and f.id_especialidad=$id_especialidad ";
+            $factura->where("factura.id_especialidad", $id_especialidad);
         }
         // por paciente
         else {
-            $where = " u.id=" . auth()->user()->id;
+            $factura->where("factura.id_paciente",  auth()->user()->id);
         }
-
-        $factura = \DB::select("SELECT f.*
-                        FROM factura f
-                        where f.state=1 and f.fecha_factura='$fecha'
-                        $where
-                        order by f.fecha_factura");
+        $factura->where("factura.fecha_factura", $fecha);
+        $factura->orderBy("factura.fecha_factura");
+        $factura = $factura->get();
         return view('factura.listar')->with('factura', $factura);
     }
     /**
@@ -103,7 +101,8 @@ class FacturaController extends Controller
             "fecha_factura" => "required|date",
             "paciente_ci" => "required",
             "paciente_nombre" => "required",
-            "concepto_id" => "required",
+            "concepto_id" => "required|array|min:1",
+            "concepto_id.*" => "required",
             // "concepto" => "required|max:300",
             "monto" => "required|numeric",
         ];
@@ -150,9 +149,6 @@ class FacturaController extends Controller
             $s->fecha_limite_emision = $configuracion->fecha_limite_emision;
             $s->codigo_control = FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr() . "-" . FuncionesComunes::getPartCodCtr();
             $s->paciente_nombre = strtoupper(trim($request->paciente_nombre));
-            $s->concepto_id = $request->concepto_id;
-            $o_concepto = Concepto::find($request->concepto_id);
-            $s->concepto = strtoupper(trim($o_concepto->nombre));
             if (auth()->user()->hasRole("doctor")) {
                 $s->monto = $request->monto;
                 $s->descuento = $request->descuento;
@@ -165,6 +161,18 @@ class FacturaController extends Controller
             $s->state = 1;
 
             $s->save();
+
+            // GUARDAR CONCEPTOS
+            $concepto_id = $request->concepto_id;
+            foreach ($concepto_id as $c) {
+                $o_concepto = Concepto::find($c);
+                FacturaConcepto::create([
+                    "id_factura" => $s->id,
+                    "id_concepto" => $c,
+                    "concepto" => strtoupper(trim($o_concepto->nombre)),
+                    "costo" => $o_concepto->costo,
+                ]);
+            }
             \Session::flash('mensaje', 'Se registro correctamente.');
             \Session::flash('class-alert', 'success');
             return redirect('factura-ver/' . $s->id);

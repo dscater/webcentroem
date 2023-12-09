@@ -112,10 +112,9 @@
                                             <select name="prioridad" id="prioridad" class="form-control chosen-select"
                                                 data-rel="chosen" placeholder="Seleccionar" requiredd>
                                                 <option value="">Seleccionar</option>
-                                                <option value="CONSULTA">CONSULTA</option>
-                                                <option value="CONTROL">CONTROL</option>
-                                                <option value="RECONSULTA">RECONSULTA</option>
-                                                <option value="EMERGENCIA">EMERGENCIA</option>
+                                                <option value="BAJA">BAJA</option>
+                                                <option value="MEDIA">MEDIA</option>
+                                                <option value="ALTA">ALTA</option>
                                             </select>
                                         </div>
                                         @if ($errors->has('prioridad'))

@@ -6,6 +6,17 @@
         rel="stylesheet" />
     <link href="{{ url('') }}/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css"
         rel="stylesheet" />
+    <style>
+        .concepto {
+            position: relative;
+        }
+
+        .concepto .eliminar {
+            position: absolute;
+            top: 5px;
+            right: -15px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -98,9 +109,7 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-12">
-
+                                <div class="col-md-12">
                                     <!-- begin col-2 -->
                                     <div class="form-group col-md-4">
                                         <label class="app-label fecha_factura"><span>*</span> Fecha de Pago:</label>
@@ -149,20 +158,31 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <!-- begin col-2 -->
-                                    <div class="form-group col-md-4">
-                                        <label class="app-label concepto"><span>*</span> Concepto:</label>
-                                        <div class="div-create-concepto">
-                                            <select name="concepto_id" id="concepto_id" class="form-control"></select>
-                                            @if ($errors->has('concepto_id'))
-                                                <div class="app-alert alert alert-danger">
-                                                    {{ $errors->first('concepto_id') }}
-                                                </div>
-                                            @endif
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="col-md-12" id="contenedor_conceptos">
+                                        <!-- begin col-2 -->
+                                        <div class="form-group concepto">
+                                            <label class="app-label concepto"><span>*</span> Concepto:</label>
+                                            <div class="div-create-concepto">
+                                                <select name="concepto_id[]" class="form-control" required></select>
+                                                @if ($errors->has('concepto_id'))
+                                                    <div class="app-alert alert alert-danger">
+                                                        {{ $errors->first('concepto_id') }}
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <button type="button" id="btnAgregarConcepto"
+                                            class="btn btn-xs btn-primary btn-block"><i class="fa fa-plus"></i> Agregar
+                                            Concepto</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
                                     <!-- begin col-2 -->
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label class="app-label monto"><span>*</span> Monto:</label>
                                         <div class="div-create-monto">
                                             <input name="monto" value="{{ old('monto') }}"
@@ -176,7 +196,7 @@
                                     </div>
                                     <!-- begin col-2 -->
                                     @if (auth()->user()->hasRole('doctor'))
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group col-md-6">
                                             <label class="app-label descuento"><span>*</span> Descuento:</label>
                                             <div class="div-create-descuento">
                                                 <input name="descuento"
@@ -194,7 +214,7 @@
                                         <input type="hidden" id="input-descuento" value="0">
                                     @endif
                                     <!-- begin col-2 -->
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-6">
                                         <label class="app-label monto_total"><span>*</span> Monto total:</label>
                                         <div class="div-create-monto-total">
                                             <input name="monto_total" value="{{ old('monto_total') }}"
@@ -207,7 +227,6 @@
                                             @endif
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                     </div>
@@ -220,8 +239,20 @@
 
 @section('script_3')
     <script>
+        let html_conceptos = "";
+        let html_concepto = `
+        <div class="form-group concepto">
+            <label class="app-label concepto"><span>*</span> Concepto:</label>
+            <div class="div-create-concepto">
+                <select name="concepto_id[]" class="form-control" required></select>
+            </div>
+        </div>`;
+        let btn_eliminar =
+            `<button type="button" class="eliminar btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>`;
         let id_especialidad_create_factura = $("#id_especialidad_create_factura");
-        let concepto_id = $("#concepto_id");
+        let contenedor_conceptos = $("#contenedor_conceptos");
+        let btnAgregarConcepto = $("#btnAgregarConcepto");
+        let array_montos = [];
         let input_monto = $("#input-monto");
         let input_descuento = $("#input-descuento");
         let input_monto_total = $("#input-monto-total");
@@ -229,10 +260,25 @@
         let tipo_paciente = $("#tipo_paciente");
         let institucion = $("#institucion");
         $('document').ready(function() {
+            // obtener conceptos por especialidad
             getConceptosEspecialidad();
-
+            // agregar concepto
+            btnAgregarConcepto.click(agregarConcepto);
+            // detectar cambio especialidad
             id_especialidad_create_factura.change(getConceptosEspecialidad);
-            concepto_id.change(getConcepto);
+
+            // obtener montos
+            contenedor_conceptos.on("change", ".concepto select", function() {
+                arma_montos();
+            });
+
+            // eliminar concepto
+            contenedor_conceptos.on("click", ".concepto .eliminar", function() {
+                $(this).parents(".concepto").remove();
+                arma_montos();
+            });
+
+            // calcular montos
             input_monto.on("keyup change", calculaMontoTotal);
             input_descuento.on("keyup change", calculaMontoTotal);
 
@@ -252,12 +298,19 @@
         });
 
         function calculaMontoTotal() {
-            if (input_monto.val().trim() != '' && input_descuento.val().trim() != '' && parseFloat(input_monto.val()) > 0 &&
-                parseFloat(input_descuento.val()) >= 0) {
-                let total = parseFloat(input_monto.val()) - parseFloat(input_descuento.val());
-                input_monto_total.val(total.toFixed(2));
+            if (array_montos.length > 0) {
+                let suma_montos = 0;
+                let suma_total = 0;
+                array_montos.forEach(elem => {
+                    console.log(elem);
+                    suma_montos += parseFloat(elem);
+                })
+
+                input_monto.val(suma_montos);
+                input_monto_total.val(suma_montos - input_descuento.val());
             } else {
-                input_monto_total.val(0);
+                input_monto.val("");
+                input_monto_total.val("");
             }
         }
 
@@ -271,33 +324,81 @@
                     },
                     dataType: "json",
                     success: function(response) {
-                        concepto_id.html(response.html);
-                        getConcepto();
+                        html_conceptos = response.html;
+                        llenaConceptos();
                     }
                 });
             } else {
-                concepto_id.html(`<option value="">SIN REGISTROS</option>`);
+                vaciaConceptos();
             }
         }
 
-        function getConcepto() {
-            if (concepto_id.val() != '') {
+        function vaciaConceptos() {
+            let conceptos = contenedor_conceptos.children(".concepto");
+            conceptos.each(function() {
+                let select = $(this).find("select");
+                select.html(`<option value="">SIN REGISTROS</option>`);
+            });
+        }
+
+        function llenaConceptos() {
+            let conceptos = contenedor_conceptos.children(".concepto");
+            conceptos.each(function() {
+                let select = $(this).find("select");
+                select.html(html_conceptos);
+            });
+            inciaCalculoTotal();
+        }
+
+        function arma_montos() {
+            array_montos = [];
+            let conceptos = contenedor_conceptos.children(".concepto");
+            conceptos.each(function() {
+                let elem = $(this);
+                let select = elem.find("select");
+                getConcepto(select.val());
+            });
+            inciaCalculoTotal();
+        }
+
+        function inciaCalculoTotal() {
+            setTimeout(() => {
+                calculaMontoTotal();
+            }, 500);
+        }
+
+        function agregarConcepto() {
+            let clone_concepto = $(html_concepto).clone();
+            let select = clone_concepto.find('select');
+            select.html(html_conceptos);
+            contenedor_conceptos.append(clone_concepto);
+            let conceptos = contenedor_conceptos.children(".concepto");
+            if (conceptos.length > 1) {
+                conceptos.each(function(index) {
+                    let elem = $(this);
+                    if (index > 0) {
+                        // boton eliminar
+                        elem.append(btn_eliminar);
+                    }
+                });
+            }
+            inciaCalculoTotal();
+        }
+
+        function getConcepto(id) {
+            if (id != '') {
                 let url = `{{ route('conceptos.get_concepto') }}`;
                 $.ajax({
                     type: "GET",
                     url: url,
                     data: {
-                        id: concepto_id.val(),
+                        id: id,
                     },
                     dataType: "json",
                     success: function(response) {
-                        input_monto.val(response.concepto.costo);
-                        calculaMontoTotal();
+                        array_montos.push(response.concepto.costo);
                     }
                 });
-            } else {
-                input_monto.val("");
-                calculaMontoTotal();
             }
         }
     </script>

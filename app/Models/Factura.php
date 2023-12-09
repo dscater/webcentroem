@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Concepto;
+use App\FacturaConcepto;
 use Illuminate\Database\Eloquent\Model;
 
 class Factura extends Model
@@ -21,16 +22,14 @@ class Factura extends Model
         "paciente_ci",
         "fecha_factura",
         "nro_factura",
-        "concepto_id",
-        "concepto",
         "monto",
         "descuento",
         "monto_total",
         "state"
     ];
 
-    public function o_concepto()
+    public function factura_conceptos()
     {
-        return $this->belongsTo(Concepto::class, 'concepto_id');
+        return $this->hasMany(FacturaConcepto::class, 'id_factura');
     }
 }
