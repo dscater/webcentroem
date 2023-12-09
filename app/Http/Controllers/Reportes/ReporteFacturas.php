@@ -131,7 +131,7 @@ class ReporteFacturas extends \FPDF
             utf8_decode("TOTAL"),
             utf8_decode(number_format($total, 2, ".", "")),
         );
-        if (!empty($resultado)) {
+        if (count($resultado) > 0) {
             $this->Row($fila, 3, 3, 0);
         }
 

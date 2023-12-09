@@ -470,31 +470,37 @@ class ReporteController extends Controller
         $hasta = $_GET["hasta"];
         $tipo_paciente = $_GET["tipo_paciente"];
 
+        $res_factura = Factura::select("factura.*")
+            ->join("especialidad", "especialidad.id", "=", "factura.id_especialidad")
+            ->where("factura.state", 1);
 
         if (auth()->user()->hasRole("administrador") || auth()->user()->hasRole("paciente")) {
             $id_especialidad = $_GET["id_especialidad"];
-            $where = ($id_especialidad == "todos") ? "" : " and f.id_especialidad=$id_especialidad ";
+            if ($id_especialidad != "todos") {
+                $res_factura->where("factura.id_especialidad", $id_especialidad);
+            }
         } else {
             $id_especialidad = \DB::select("SELECT id_especialidad from persona where id_user=" . auth()->user()->id)[0]->id_especialidad;
-            $where = " and f.id_especialidad=$id_especialidad ";
+            $res_factura->where("factura.id_especialidad", $id_especialidad);
         }
 
-        $where .= ($desde == "") ? "" : " and '$desde'<=f.fecha_factura ";
-        $where .= ($hasta == "") ? "" : " and '$hasta 23:59:59'>=f.fecha_factura ";
-
-
-        $data = (object) array();
+        if ($desde != "") {
+            $res_factura->where("factura.fecha_factura", ">=", $desde);
+        }
+        if ($hasta != "") {
+            $res_factura->where("factura.fecha_factura", "<=", $hasta);
+        }
 
         if ($tipo_paciente != 'todos') {
-            $where .= "and f.tipo_paciente = '" . $tipo_paciente . "'";
+            $res_factura->where("factura.tipo_paciente",  $tipo_paciente);
         }
 
-        $data->resultado = Factura::select("factura.*")
-            ->join("especialidad", "especialidad.id", "=", "factura.id_especialidad")
-            ->where("factura.state", 1)
-            ->orderBy("especialidad.especialidad", "asc")
-            ->orderBy("nro_factura", "asc")
-            ->get();
+        $res_factura->orderBy("especialidad.especialidad", "asc");
+        $res_factura->orderBy("nro_factura", "asc");
+        $res_factura = $res_factura->get();
+
+        $data = (object) array();
+        $data->resultado = $res_factura;
 
         $data->tipo = "I";
         $data->tipo_paciente = $tipo_paciente;
