@@ -26,17 +26,18 @@ use App\Helpers\FuncionesComunes;
         }
 
 
-        .alta {
+        .emergencia {
             background: rgb(218, 28, 28) !important;
             color: white;
         }
 
-        .baja {
+        .consulta,
+        .control {
             background: rgb(0, 135, 27) !important;
             color: white;
         }
 
-        .media {
+        .reconsulta {
             background: rgb(253, 245, 0) !important;
             color: black;
         }
@@ -97,11 +98,11 @@ use App\Helpers\FuncionesComunes;
                     </div>
                 </div>
                 <!--div class="alert alert-warning fade in">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
-                                </div-->
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        The Buttons extension for DataTables provides a common set of options, API methods and styling to display buttons on a page that will interact with a DataTable. The core library provides the based framework upon which plug-ins can built.
+                                    </div-->
                 <div class="panel-body">
                     <table id="data-table" class="table table-striped table-bordered">
                         <thead>

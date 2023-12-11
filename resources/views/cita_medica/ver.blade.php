@@ -75,6 +75,10 @@ use App\Helpers\FuncionesComunes;
                                 </div>
 
                                 <div class="app-form-group form-group col-md-12">
+                                    <label class="app-label"><span></span> Prioridad: {{$cita_medica->prioridad}}</label>
+                                </div>
+
+                                <div class="app-form-group form-group col-md-12">
                                     <label class="app-label"><span></span> Fecha de la cita: {{FuncionesComunes::fecha_literal($cita_medica->fecha_cita, 5)}}</label>
                                 </div>
 

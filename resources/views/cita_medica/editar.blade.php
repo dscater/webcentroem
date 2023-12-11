@@ -114,9 +114,10 @@
                                             <select name="prioridad" id="prioridad" class="form-control chosen-select"
                                                 data-rel="chosen" placeholder="Seleccionar" requiredd>
                                                 <option value="">Seleccionar</option>
-                                                <option value="BAJA" <?php echo $cita_medica->prioridad == 'BAJA' ? 'selected' : ''; ?>>BAJA</option>
-                                                <option value="MEDIA" <?php echo $cita_medica->prioridad == 'MEDIA' ? 'selected' : ''; ?>>MEDIA</option>
-                                                <option value="ALTA" <?php echo $cita_medica->prioridad == 'ALTA' ? 'selected' : ''; ?>>ALTA</option>
+                                                <option value="CONSULTA" <?php echo $cita_medica->prioridad == 'CONSULTA' ? 'selected' : ''; ?>>CONSULTA</option>
+                                                <option value="CONTROL" <?php echo $cita_medica->prioridad == 'CONTROL' ? 'selected' : ''; ?>>CONTROL</option>
+                                                <option value="RECONSULTA" <?php echo $cita_medica->prioridad == 'RECONSULTA' ? 'selected' : ''; ?>>RECONSULTA</option>
+                                                <option value="EMERGENCIA" <?php echo $cita_medica->prioridad == 'EMERGENCIA' ? 'selected' : ''; ?>>EMERGENCIA</option>
                                             </select>
                                         </div>
                                         @if ($errors->has('prioridad'))
